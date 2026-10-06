@@ -1,4 +1,4 @@
--- YagmurStrike Launcher - 用 http_request 載入（你的執行器 game:HttpGet 返回 nil）
+-- YagmurStrike Launcher - loads via http_request (your executor game:HttpGet returns nil)
 if game.PlaceId ~= 114234929420007 then warn("[BS] Wrong game!") return end
 local u = "https://raw.githubusercontent.com/Yagmur1337/YagmurStrike/main/YagmurStrike_Standalone.lua?t=" .. tostring(math.floor(tick()*1000))
 print("[BS] Launcher v4.1: downloading main script...")

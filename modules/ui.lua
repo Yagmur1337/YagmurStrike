@@ -187,27 +187,27 @@ BS.BindKey(Enum.KeyCode.X, function()
     Flags.ESP_Box = not Flags.ESP_Box
     Flags.ESP_Name = Flags.ESP_Box
     Flags.ESP_Health = Flags.ESP_Box
-    BS.FeatureNotify("透視", Flags.ESP_Box)
+    BS.FeatureNotify("ESP", Flags.ESP_Box)
 end)
 
 BS.BindKey(Enum.KeyCode.Z, function()
     Flags.Bhop = not Flags.Bhop
-    BS.FeatureNotify("連跳", Flags.Bhop)
+    BS.FeatureNotify("Bunny Hop", Flags.Bhop)
 end)
 
 BS.BindKey(Enum.KeyCode.C, function()
     Flags.AA = not Flags.AA
-    BS.FeatureNotify("反瞄準", Flags.AA)
+    BS.FeatureNotify("Anti-Aim", Flags.AA)
 end)
 
 BS.BindKey(Enum.KeyCode.V, function()
     Flags.SilentAim = not Flags.SilentAim
-    BS.FeatureNotify("靜默瞄準", Flags.SilentAim)
+    BS.FeatureNotify("Silent Aim", Flags.SilentAim)
 end)
 
 BS.BindKey(Enum.KeyCode.N, function()
     Flags.NightMode = not Flags.NightMode
-    BS.FeatureNotify("夜視模式", Flags.NightMode)
+    BS.FeatureNotify("Night Vision", Flags.NightMode)
 end)
 
 -- ═══════════════════════════════════════════════════════════════

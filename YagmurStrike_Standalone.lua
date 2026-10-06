@@ -282,12 +282,12 @@ LogLayout.SortOrder = Enum.SortOrder.LayoutOrder
 LogLayout.Padding = UDim.new(0, 1)
 
 local MOD_CN = {
-    ['api']='API',['bypass']='反檢測',['cheatdetect']='作弊偵測',['combat']='戰鬥系統',
-    ['combatassist']='戰鬥輔助',['compat']='兼容層',['core']='核心',['errorhandler']='錯誤處理',
-    ['esp']='透視系統',['events']='事件系統',['hud']='HUD顯示',['killeffects']='擊殺特效',
-    ['luau_compat']='Luau兼容',['luau_detect']='Luau偵測',['pingadapt']='延遲適應',
-    ['rage']='暴力系統',['settings']='設定',['smartai']='智能AI',['stealth']='隱身系統',
-    ['ui']='介面',['utility']='工具',['viewmodel']='視角模型',['webhook']='Webhook',['world']='世界',
+    ['api']='API',['bypass']='Anti-Cheat Bypass',['cheatdetect']='Cheat Detection',['combat']='Combat System',
+    ['combatassist']='Combat Assist',['compat']='Compat Layer',['core']='Core',['errorhandler']='Error Handler',
+    ['esp']='ESP System',['events']='Event System',['hud']='HUD Display',['killeffects']='Kill Effects',
+    ['luau_compat']='Luau Compat',['luau_detect']='Luau Detect',['pingadapt']='Lag Adaptation',
+    ['rage']='Rage System',['settings']='Settings',['smartai']='Smart AI',['stealth']='Stealth System',
+    ['ui']='Interface',['utility']='Utility',['viewmodel']='Viewmodel',['webhook']='Webhook',['world']='World',
 }
 
 local logCount = 0

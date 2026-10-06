@@ -11,7 +11,7 @@ local lplr = Players and Players.LocalPlayer
 
 if not BS.Win then warn("[SmartAI] BS.Win not available") return end
 local page = nil
-pcall(function() page = BS.Win:Tab("暴力") end)
+pcall(function() page = BS.Win:Tab("Rage") end)
 if not page then warn("[SmartAI] Failed to create tab!") return end
 
 -- AI State
@@ -50,25 +50,25 @@ page:Separator()
 
 page:Label(" Target Selection AI ")
 page:Toggle("AI Target Select", false, function(v) Flags.AI_TargetSelect = v end)
-page:Dropdown({Name="Target Priority", Flag="AITargetPriority", Options={"距离","血量","威胁","综合","随机","智能"}, Default="综合"})
-page:Toggle("威胁评估", false, function(v) Flags.AI_ThreatAssess = v end)
-page:Toggle("敌人行为分析", false, function(v) Flags.AI_BehaviorAnalysis = v end)
-page:Toggle("武器匹配优化", false, function(v) Flags.AI_WeaponMatch = v end)
+page:Dropdown({Name="Target Priority", Flag="AITargetPriority", Options={"Distance","Health","Threat","Composite","Random","Smart"}, Default="Composite"})
+page:Toggle("Threat Assessment", false, function(v) Flags.AI_ThreatAssess = v end)
+page:Toggle("Enemy Behavior Analysis", false, function(v) Flags.AI_BehaviorAnalysis = v end)
+page:Toggle("Weapon Optimization", false, function(v) Flags.AI_WeaponMatch = v end)
 page:Separator()
 
 page:Label(" Prediction AI ")
-page:Toggle("AI 预测", false, function(v) Flags.AI_Prediction = v end)
-page:Toggle("移动模式识别", false, function(v) Flags.AI_MovementPattern = v end)
-page:Toggle("跳跃预测", false, function(v) Flags.AI_JumpPredict = v end)
-page:Toggle("strafe 预测", false, function(v) Flags.AI_StrafePredict = v end)
-page:Slider("预测精度", 1, 10, 5, function(v) Flags.AI_PredAccuracy = v end)
+page:Toggle("AI Prediction", false, function(v) Flags.AI_Prediction = v end)
+page:Toggle("Movement Pattern Recognition", false, function(v) Flags.AI_MovementPattern = v end)
+page:Toggle("Jump Prediction", false, function(v) Flags.AI_JumpPredict = v end)
+page:Toggle("Strafe Prediction", false, function(v) Flags.AI_StrafePredict = v end)
+page:Slider("Prediction Accuracy", 1, 10, 5, function(v) Flags.AI_PredAccuracy = v end)
 page:Separator()
 
 page:Label(" Playstyle AI ")
-page:Toggle("自适应玩法", false, function(v) Flags.AI_AdaptivePlay = v end)
-page:Toggle("自我限制", false, function(v) Flags.AI_SelfLimit = v end)
-page:Slider("击杀上限/h", 5, 50, 20, function(v) Flags.AI_KillLimit = v end)
-page:Toggle("模式轮换", false, function(v) Flags.AI_ModeRotate = v end)
+page:Toggle("Adaptive Gameplay", false, function(v) Flags.AI_AdaptivePlay = v end)
+page:Toggle("Self Limit", false, function(v) Flags.AI_SelfLimit = v end)
+page:Slider("Kill Cap/h", 5, 50, 20, function(v) Flags.AI_KillLimit = v end)
+page:Toggle("Mode Rotation", false, function(v) Flags.AI_ModeRotate = v end)
 page:Separator()
 
 page:Label(" AI Info ")
@@ -186,7 +186,7 @@ function AI.SelectTarget(maxDist, fov)
     local mousePos = UserInputService:GetMouseLocation()
     local myPos = myHRP.Position
     local myTeam = BS.team()
-    local priority = Flags.AITargetPriority or "综合"
+    local priority = Flags.AITargetPriority or "Composite"
 
     local candidates = {}
 
@@ -222,13 +222,13 @@ function AI.SelectTarget(maxDist, fov)
         -- Calculate composite score
         local score = 0
 
-        if priority == "距离" then
+        if priority == "Distance" then
             score = 1000 - dist
-        elseif priority == "血量" then
+        elseif priority == "Health" then
             score = 100 - hum.Health
-        elseif priority == "威胁" then
+        elseif priority == "Threat" then
             score = profile.AggressionLevel + (100 - profile.AimSkill) * 0.5
-        elseif priority == "智能" then
+        elseif priority == "Smart" then
             -- Smart scoring: balance multiple factors
             local distScore = math.clamp(1000 - dist, 0, 1000) * 0.3
             local hpScore = (100 - hum.Health) * 0.2
@@ -246,10 +246,10 @@ function AI.SelectTarget(maxDist, fov)
             -- Bonus: moving targets are easier to predict
             local speed = profile.AvgSpeed
             if speed > 5 then score = score + 20 end
-        elseif priority == "随机" then
+        elseif priority == "Random" then
             score = math.random(1, 1000)
         else
-            -- Default:综合 (composite)
+            -- Default:Composite (composite)
             local distScore = math.clamp(1000 - dist, 0, 1000) * 0.35
             local hpScore = (100 - hum.Health) * 0.25
             local crosshairScore = math.clamp(500 - screenDist, 0, 500) * 0.4

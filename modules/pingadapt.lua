@@ -15,7 +15,7 @@ local lplr = Players.LocalPlayer
 
 if not BS.Win then warn("[Ping Adapt] BS.Win not available - ui.lua may have failed") return end
 local page = nil
-pcall(function() page = BS.Win:Tab("暴力") end)
+pcall(function() page = BS.Win:Tab("Rage") end)
 if not page then warn("[PingAdapt] Failed to create tab!") return end
 if not page or not page.Toggle then warn("[PingAdapt] Failed to create tab!") return end
 
@@ -24,11 +24,11 @@ BS.PingAdapt = PA
 
 -- -- SECTION 1: PING MONITOR 
 -- page:Label(" Ping  ")
-page:Toggle("延遲適應", true, function(v) Flags.PingAdapt = v end)
-page:Dropdown({Name="適應模式", Flag="PingAdaptMode", Options={"保守","平衡","進攻","極致"}, Default="Balanced"})
-page:Toggle("顯示延遲統計", false, function(v) Flags.PingShowStats = v end)
-page:Toggle("延遲自動恐慌", true, function(v) Flags.PingPanic = v end)
-page:Slider("恐慌延遲值", 200, 500, 350, function(v) Flags.PingPanicThreshold = v end)
+page:Toggle("Lag Adaptation", true, function(v) Flags.PingAdapt = v end)
+page:Dropdown({Name="Adapt Mode", Flag="PingAdaptMode", Options={"Conservative","Balanced","Aggressive","Extreme"}, Default="Balanced"})
+page:Toggle("Show Ping Stats", false, function(v) Flags.PingShowStats = v end)
+page:Toggle("Ping Auto Panic", true, function(v) Flags.PingPanic = v end)
+page:Slider("Panic Delay Value", 200, 500, 350, function(v) Flags.PingPanicThreshold = v end)
 
 -- Ping State
 local PingState = {
@@ -355,31 +355,31 @@ end
 
 -- -- SECTION 3: PING-ADAPTED AIMBOT  ping 
 -- page:Label("  Ping  ")
-page:Toggle("自瞄延遲適應", true, function(v) Flags.AimPingAdapt = v end)
-page:Toggle("自動延遲補償", true, function(v) Flags.LagCompAuto = v end)
-page:Toggle("自動預測", true, function(v) Flags.PredAuto = v end)
-page:Toggle("自動平滑", true, function(v) Flags.SmoothAuto = v end)
-page:Toggle("自動視野", true, function(v) Flags.FOVAuto = v end)
+page:Toggle("Aimbot Lag Adapt", true, function(v) Flags.AimPingAdapt = v end)
+page:Toggle("Auto Lag Comp", true, function(v) Flags.LagCompAuto = v end)
+page:Toggle("Auto Prediction", true, function(v) Flags.PredAuto = v end)
+page:Toggle("Auto Smooth", true, function(v) Flags.SmoothAuto = v end)
+page:Toggle("Auto FOV", true, function(v) Flags.FOVAuto = v end)
 
 -- -- SECTION 4: PING-ADAPTED TRIGGERBOT  ping 
 -- page:Label("  Ping  ")
-page:Toggle("觸發器延遲適應", true, function(v) Flags.TBPingAdapt = v end)
+page:Toggle("Triggerbot Lag Adapt", true, function(v) Flags.TBPingAdapt = v end)
 
 -- -- SECTION 5: PING-ADAPTED ESP ESP ping 
 -- page:Label(" ESP Ping  ")
-page:Toggle("透視延遲適應", true, function(v) Flags.ESPPingAdapt = v end)
-page:Toggle("透視品質縮放", true, function(v) Flags.ESPQualityScale = v end)
+page:Toggle("ESP Lag Adapt", true, function(v) Flags.ESPPingAdapt = v end)
+page:Toggle("ESP Quality Scale", true, function(v) Flags.ESPQualityScale = v end)
 
 -- -- SECTION 6: PING-ADAPTED MOVEMENT  ping 
 -- page:Label(" ? Ping  ")
-page:Toggle("移動延遲適應", true, function(v) Flags.MovePingAdapt = v end)
-page:Toggle("連跳延遲適應", true, function(v) Flags.BhopPingAdapt = v end)
+page:Toggle("Movement Lag Adapt", true, function(v) Flags.MovePingAdapt = v end)
+page:Toggle("Bhop Delay Adapt", true, function(v) Flags.BhopPingAdapt = v end)
 
 -- -- SECTION 7: PING-ADAPTED HVH HVH ping 
 -- page:Label(" HVH Ping  ")
-page:Toggle("反瞄延遲適應", true, function(v) Flags.AAPingAdapt = v end)
-page:Toggle("自動假延遲", true, function(v) Flags.FLPingAdapt = v end)
-page:Toggle("解析自動", true, function(v) Flags.ResolverPingAdapt = v end)
+page:Toggle("Anti-Aim Lag Adapt", true, function(v) Flags.AAPingAdapt = v end)
+page:Toggle("Auto Fake Lag", true, function(v) Flags.FLPingAdapt = v end)
+page:Toggle("Parse Auto", true, function(v) Flags.ResolverPingAdapt = v end)
 
 -- -- SECTION 8: PING STATISTICS DISPLAY
 -- page:Label(" Ping ? ")

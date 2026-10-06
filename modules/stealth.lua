@@ -19,7 +19,7 @@ local lplr = Players.LocalPlayer
 
 if not BS.Win then warn("[Stealth] BS.Win not available - ui.lua may have failed") return end
 local page = nil
-pcall(function() page = BS.Win:Tab("關於") end)
+pcall(function() page = BS.Win:Tab("About") end)
 if not page then warn("[Stealth] Failed to create tab!") return end
 if not page or not page.Toggle then warn("[Stealth] Failed to create tab!") return end
 
@@ -37,10 +37,10 @@ Stealth.IsHiding = false
 -- Hide script origin from debug info that AC scans
 
 page:Label(" Callstack & Debug ")
-page:Toggle("清除呼叫堆疊", true, function(v) Flags.StealthCallstack = v end)
-page:Toggle("偽造來源", true, function(v) Flags.StealthSpoofSource = v end)
-page:Toggle("隱藏錯誤", true, function(v) Flags.StealthHideErrors = v end)
-page:Toggle("停用調試庫", false, function(v) Flags.StealthNoDebug = v end)
+page:Toggle("Clear Call Stack", true, function(v) Flags.StealthCallstack = v end)
+page:Toggle("Spoof Origin", true, function(v) Flags.StealthSpoofSource = v end)
+page:Toggle("Hide Errors", true, function(v) Flags.StealthHideErrors = v end)
+page:Toggle("Disable Debug Library", false, function(v) Flags.StealthNoDebug = v end)
 
  -- Callstack Cleanup Engine
 -- Wrap all our function calls to clean debug traceback
@@ -86,11 +86,11 @@ end)
 -- Hide our modifications from getgenv() and environment scans
 
 page:Label(" Environment Hiding ")
-page:Toggle("從 getgenv 隱藏", true, function(v) Flags.StealthHideEnv = v end)
-page:Toggle("清除環境", true, function(v) Flags.StealthCleanEnv = v end)
-page:Toggle("偽造 checkcaller", true, function(v) Flags.StealthSpoofCaller = v end)
-page:Toggle("隱藏 CoreGui", true, function(v) Flags.StealthHideCoreGui = v end)
-page:Toggle("對玩家隱藏", false, function(v) Flags.StealthHidePlayers = v end)
+page:Toggle("Hide From getgenv", true, function(v) Flags.StealthHideEnv = v end)
+page:Toggle("Clean Environment", true, function(v) Flags.StealthCleanEnv = v end)
+page:Toggle("Spoof checkcaller", true, function(v) Flags.StealthSpoofCaller = v end)
+page:Toggle("Hide CoreGui", true, function(v) Flags.StealthHideCoreGui = v end)
+page:Toggle("Hide From Players", false, function(v) Flags.StealthHidePlayers = v end)
 
  -- Environment Hiding Engine
 local hiddenEnvVars = {}
@@ -193,11 +193,11 @@ end
 -- Hide metamethod hooks from detection
 
 page:Label(" Hook Masking ")
-page:Toggle("偽裝鉤子", true, function(v) Flags.StealthMaskHooks = v end)
-page:Toggle("備份原始鉤子", true, function(v) Flags.StealthBackup = v end)
-page:Toggle("偵測鉤子掃描", true, function(v) Flags.StealthDetectHookScan = v end)
-page:Toggle("保護 Namecall", true, function(v) Flags.StealthProtectNamecall = v end)
-page:Toggle("保護 Index", true, function(v) Flags.StealthProtectIndex = v end)
+page:Toggle("Spoof Hooks", true, function(v) Flags.StealthMaskHooks = v end)
+page:Toggle("Backup Original Hooks", true, function(v) Flags.StealthBackup = v end)
+page:Toggle("Detect Hook Scan", true, function(v) Flags.StealthDetectHookScan = v end)
+page:Toggle("Protect Namecall", true, function(v) Flags.StealthProtectNamecall = v end)
+page:Toggle("Protect Index", true, function(v) Flags.StealthProtectIndex = v end)
 
  -- Hook Masking Engine
 local originalMetatables = {}
@@ -273,12 +273,12 @@ end)
 -- Multi-layer encoding with polymorphic keys
 
 page:Label(" String Obfuscation ")
-page:Toggle("混淆字串", true, function(v) Flags.StealthObfuscate = v end)
+page:Toggle("Obfuscate Strings", true, function(v) Flags.StealthObfuscate = v end)
 page:Slider("Obfuscation Layers", 1, 5, 3, function(v) Flags.StealthObfLayers = v end)
-page:Toggle("多態按鍵", true, function(v) Flags.StealthPolyKeys = v end)
-page:Toggle("隱藏GUI名字", true, function(v) Flags.StealthHideGUI = v end)
-page:Toggle("隨機化GUI", false, function(v) Flags.StealthRandomGUI = v end)
-page:Toggle("加密設定", true, function(v) Flags.StealthEncryptCfg = v end)
+page:Toggle("Polymorphic Keys", true, function(v) Flags.StealthPolyKeys = v end)
+page:Toggle("Hide GUI Name", true, function(v) Flags.StealthHideGUI = v end)
+page:Toggle("Randomize GUI", false, function(v) Flags.StealthRandomGUI = v end)
+page:Toggle("Encrypt Settings", true, function(v) Flags.StealthEncryptCfg = v end)
 
  -- Advanced String Obfuscator
 -- Uses multiple XOR layers with rotating keys
@@ -391,10 +391,10 @@ end)
 -- Avoid pattern detection in action timing
 
 page:Label(" Timing Obfuscation ")
-page:Toggle("隨機化時序", true, function(v) Flags.StealthRandomTiming = v end)
-page:Toggle("抖動執行", false, function(v) Flags.StealthJitterExec = v end)
+page:Toggle("Randomize Timing", true, function(v) Flags.StealthRandomTiming = v end)
+page:Toggle("Jitter Execution", false, function(v) Flags.StealthJitterExec = v end)
 page:Slider("Timing Variance", 0, 50, 20, function(v) Flags.StealthTimingVar = v end)
-page:Toggle("反模式", true, function(v) Flags.StealthAntiPattern = v end)
+page:Toggle("Anti Pattern", true, function(v) Flags.StealthAntiPattern = v end)
 
  -- Timing Obfuscation Engine
 local timingHistory = {}
@@ -457,10 +457,10 @@ end)
 -- Hide suspicious remote calls
 
 page:Label(" Network ")
-page:Toggle("混淆遠端", true, function(v) Flags.StealthObfRemotes = v end)
-page:Toggle("限速呼叫", true, function(v) Flags.StealthRateLimit = v end)
+page:Toggle("Obfuscate Remotes", true, function(v) Flags.StealthObfRemotes = v end)
+page:Toggle("Rate Limit Calls", true, function(v) Flags.StealthRateLimit = v end)
 page:Slider("Max Remote/s", 5, 50, 20, function(v) Flags.StealthMaxRemote = v end)
-page:Toggle("封包分散", false, function(v) Flags.StealthPacketSpread = v end)
+page:Toggle("Packet Spread", false, function(v) Flags.StealthPacketSpread = v end)
 
  -- Network Rate Limiter
 local remoteCalls = {}
@@ -514,12 +514,12 @@ end
 -- SECTION 7: PROPERTY SPOOFING (Advanced)
 
 page:Label(" Property Spoofing ")
-page:Toggle("偽造所有屬性", true, function(v) Flags.StealthSpoofAll = v end)
-page:Toggle("偽造行走速度", true, function(v) Flags.StealthSpoofSpeed = v end)
-page:Toggle("偽造跳躍力", true, function(v) Flags.StealthSpoofJump = v end)
-page:Toggle("偽造臀部高度", true, function(v) Flags.StealthSpoofHip = v end)
-page:Toggle("偽造視野", true, function(v) Flags.StealthSpoofFOV = v end)
-page:Toggle("偽造CFrame", false, function(v) Flags.StealthSpoofCFrame = v end)
+page:Toggle("Spoof All Props", true, function(v) Flags.StealthSpoofAll = v end)
+page:Toggle("Spoof Walk Speed", true, function(v) Flags.StealthSpoofSpeed = v end)
+page:Toggle("Spoof Jump Power", true, function(v) Flags.StealthSpoofJump = v end)
+page:Toggle("Spoof Hip Height", true, function(v) Flags.StealthSpoofHip = v end)
+page:Toggle("Spoof FOV", true, function(v) Flags.StealthSpoofFOV = v end)
+page:Toggle("Spoof CFrame", false, function(v) Flags.StealthSpoofCFrame = v end)
 
  -- PROPERTY SPOOFING ENGINE (SAFE MODE)
 -- Uses direct property manipulation instead of __index hooks
@@ -690,13 +690,13 @@ BS.PropertySpoof = {
 -- SECTION 8: ANTI-CHEAT DETECTION (Advanced)
 
 page:Label(" AC Detection ")
-page:Toggle("自動偵測反作弊", true, function(v) Flags.StealthAutoDetect = v end)
-page:Toggle("深度掃描", true, function(v) Flags.StealthDeepScan = v end)
-page:Toggle("監控心跳", true, function(v) Flags.StealthMonitorHeartbeat = v end)
-page:Toggle("偵測遠端鉤子", true, function(v) Flags.StealthDetectRemoteHook = v end)
-page:Toggle("偵測屬性監控", true, function(v) Flags.StealthDetectPropMon = v end)
-page:Toggle("偵測時警告", true, function(v) Flags.StealthAlert = v end)
-page:Toggle("風險時自動停用", false, function(v) Flags.StealthAutoDisable = v end)
+page:Toggle("Auto Detect Anti-Cheat", true, function(v) Flags.StealthAutoDetect = v end)
+page:Toggle("Deep Scan", true, function(v) Flags.StealthDeepScan = v end)
+page:Toggle("Monitor Heartbeat", true, function(v) Flags.StealthMonitorHeartbeat = v end)
+page:Toggle("Detect Remote Hooks", true, function(v) Flags.StealthDetectRemoteHook = v end)
+page:Toggle("Detect Property Monitor", true, function(v) Flags.StealthDetectPropMon = v end)
+page:Toggle("Alert On Detection", true, function(v) Flags.StealthAlert = v end)
+page:Toggle("Auto Disable On Risk", false, function(v) Flags.StealthAutoDisable = v end)
 
  -- Extended AC Patterns
 local AC_PATTERNS = {
@@ -861,13 +861,13 @@ end)
 -- SECTION 9: BEHAVIORAL MASKING (Advanced)
 
 page:Label(" Behavioral Masking ")
-page:Toggle("全部人性化", true, function(v) Flags.StealthHumanize = v end)
+page:Toggle("Humanize All", true, function(v) Flags.StealthHumanize = v end)
 page:Slider("Human Delay", 0, 300, 80, function(v) Flags.StealthHumanDelay = v end)
 page:Slider("Human Inaccuracy", 0, 15, 5, function(v) Flags.StealthHumanInacc = v end)
-page:Toggle("隨機點擊時序", true, function(v) Flags.StealthRandomClick = v end)
-page:Toggle("移動隨機化", true, function(v) Flags.StealthRandomMove = v end)
-page:Toggle("瞄準平滑", true, function(v) Flags.StealthAimSmooth = v end)
-page:Toggle("反應時間", true, function(v) Flags.StealthReaction = v end)
+page:Toggle("Random Click Timing", true, function(v) Flags.StealthRandomClick = v end)
+page:Toggle("Randomize Movement", true, function(v) Flags.StealthRandomMove = v end)
+page:Toggle("Aim Smooth", true, function(v) Flags.StealthAimSmooth = v end)
+page:Toggle("Reaction Time", true, function(v) Flags.StealthReaction = v end)
 page:Slider("Reaction Min", 50, 500, 150, function(v) Flags.StealthReactionMin = v end)
 page:Slider("Reaction Max", 100, 1000, 400, function(v) Flags.StealthReactionMax = v end)
 
@@ -924,24 +924,24 @@ end
 -- SECTION 10: ADVANCED SAFETY
 
 page:Label(" Advanced Safety ")
-page:Toggle("風險計算器", true, function(v) Flags.StealthRiskCalc = v end)
+page:Toggle("Risk Calculator", true, function(v) Flags.StealthRiskCalc = v end)
 page:Slider("Risk Threshold", 30, 100, 70, function(v) Flags.StealthRiskThresh = v end)
-page:Toggle("靜默模式", false, function(v) Flags.StealthSilentMode = v end)
-page:Toggle("反重播", false, function(v) Flags.StealthAntiReplay = v end)
-page:Toggle("封包混淆", false, function(v) Flags.StealthPacketObf = v end)
-page:Toggle("記憶體清理", true, function(v) Flags.StealthMemClean = v end)
+page:Toggle("Silent Mode", false, function(v) Flags.StealthSilentMode = v end)
+page:Toggle("Anti Replay", false, function(v) Flags.StealthAntiReplay = v end)
+page:Toggle("Packet Obfuscation", false, function(v) Flags.StealthPacketObf = v end)
+page:Toggle("Memory Cleanup", true, function(v) Flags.StealthMemClean = v end)
 page:Slider("Mem Clean Interval", 10, 60, 30, function(v) Flags.StealthMemInt = v end)
-page:Toggle("反調試", true, function(v) Flags.StealthAntiDebug = v end)
-page:Toggle("伺服器驗證繞過", false, function(v) Flags.StealthServBypass = v end)
-page:Toggle("緊急斷線", false, function(v) Flags.StealthEmgDisconnect = v end)
+page:Toggle("Anti Debug", true, function(v) Flags.StealthAntiDebug = v end)
+page:Toggle("Server Validation Bypass", false, function(v) Flags.StealthServBypass = v end)
+page:Toggle("Emergency Disconnect", false, function(v) Flags.StealthEmgDisconnect = v end)
 page:Slider("Emg Disconnect HP", 5, 50, 15, function(v) Flags.StealthEmgHP = v end)
-page:Toggle("自動踢出偵測", false, function(v) Flags.StealthAutoKick = v end)
-page:Toggle("行為隨機化", true, function(v) Flags.StealthBehavior = v end)
+page:Toggle("Auto Kick Detection", false, function(v) Flags.StealthAutoKick = v end)
+page:Toggle("Behavior Randomization", true, function(v) Flags.StealthBehavior = v end)
 page:Slider("Behavior Interval", 1, 30, 10, function(v) Flags.StealthBehInt = v end)
-page:Toggle("全限速", true, function(v) Flags.StealthRateLimit = v end)
+page:Toggle("Global Rate Limit", true, function(v) Flags.StealthRateLimit = v end)
 page:Slider("Max Actions/s", 5, 50, 20, function(v) Flags.StealthMaxAct = v end)
-page:Toggle("白名單管理員", true, function(v) Flags.StealthWhitelistAdmin = v end)
-page:Toggle("風險時換服", false, function(v) Flags.StealthServerHop = v end)
+page:Toggle("Whitelist Admin", true, function(v) Flags.StealthWhitelistAdmin = v end)
+page:Toggle("Server Hop On Risk", false, function(v) Flags.StealthServerHop = v end)
 page:Slider("Server Hop Threshold", 50, 100, 80, function(v) Flags.StealthHopThresh = v end)
 
  -- Risk Calculator Engine
@@ -1440,43 +1440,43 @@ end)
 -- Specific techniques to avoid ban while using HVH features
 
 page:Label(" HVH  ")
-page:Toggle("HVH 安全模式", false, function(v) Flags.HVHSafeMode = v end)
-page:Toggle("反信任分數繞過", true, function(v) Flags.HVHTrustBypass = v end)
-page:Toggle("行為一致性", true, function(v) Flags.HVHBehavior = v end)
-page:Toggle("擊殺模式偽裝", true, function(v) Flags.HVHKillMask = v end)
-page:Toggle("移動正常性", true, function(v) Flags.HVHMoveLegit = v end)
-page:Toggle("瞄準正常性", true, function(v) Flags.HVHAimLegit = v end)
-page:Toggle("反統計偵測", true, function(v) Flags.HVHAntiStat = v end)
-page:Toggle("伺服器驗證偽裝", true, function(v) Flags.HVHServMask = v end)
-page:Toggle("場次暖身", true, function(v) Flags.HVHWarmup = v end)
+page:Toggle("HVH Safe Mode", false, function(v) Flags.HVHSafeMode = v end)
+page:Toggle("Anti Trust Score Bypass", true, function(v) Flags.HVHTrustBypass = v end)
+page:Toggle("Behavior Consistency", true, function(v) Flags.HVHBehavior = v end)
+page:Toggle("Kill Pattern Mask", true, function(v) Flags.HVHKillMask = v end)
+page:Toggle("Legit Movement", true, function(v) Flags.HVHMoveLegit = v end)
+page:Toggle("Legit Aim", true, function(v) Flags.HVHAimLegit = v end)
+page:Toggle("Anti Stat Detection", true, function(v) Flags.HVHAntiStat = v end)
+page:Toggle("Server Validation Mask", true, function(v) Flags.HVHServMask = v end)
+page:Toggle("Session Warmup", true, function(v) Flags.HVHWarmup = v end)
 page:Slider("Warmup Duration", 30, 300, 120, function(v) Flags.HVHWarmupDur = v end)
-page:Toggle("逐步升級", true, function(v) Flags.HVHGradual = v end)
-page:Toggle("反統計尖峰", true, function(v) Flags.HVHAntiSpike = v end)
-page:Toggle("擊殺冷卻", true, function(v) Flags.HVHKillCD = v end)
+page:Toggle("Gradual Escalation", true, function(v) Flags.HVHGradual = v end)
+page:Toggle("Anti Stat Spike", true, function(v) Flags.HVHAntiSpike = v end)
+page:Toggle("Kill Cooldown", true, function(v) Flags.HVHKillCD = v end)
 page:Slider("Kill CD Time", 1, 10, 3, function(v) Flags.HVHKillCDTime = v end)
 page:Label(" HVH  ")
-page:Toggle("假失彈", true, function(v) Flags.HVHFakeMiss = v end)
+page:Toggle("Fake Miss", true, function(v) Flags.HVHFakeMiss = v end)
 page:Slider("Fake Miss Rate", 5, 40, 15, function(v) Flags.HVHFakeMissRate = v end)
-page:Toggle("瞄準延遲變化", true, function(v) Flags.HVHAimDelay = v end)
+page:Toggle("Aim Delay Variation", true, function(v) Flags.HVHAimDelay = v end)
 page:Slider("Aim Delay Min", 50, 300, 100, function(v) Flags.HVHAimDelayMin = v end)
 page:Slider("Aim Delay Max", 100, 500, 300, function(v) Flags.HVHAimDelayMax = v end)
-page:Toggle("移動模式", true, function(v) Flags.HVHMovePattern = v end)
-page:Dropdown({Name="移動模式", Flag="HVMvPat", Options={"線性","Zigzag","Random Walk","Strafe","Stop-Go"}, Default="Linear"})
-page:Toggle("十字準星靜止", true, function(v) Flags.HVHRestCrosshair = v end)
-page:Toggle("環顧", false, function(v) Flags.HVHLookAround = v end)
+page:Toggle("Move Pattern", true, function(v) Flags.HVHMovePattern = v end)
+page:Dropdown({Name="Move Pattern", Flag="HVMvPat", Options={"Linear","Zigzag","Random Walk","Strafe","Stop-Go"}, Default="Linear"})
+page:Toggle("Crosshair Idle", true, function(v) Flags.HVHRestCrosshair = v end)
+page:Toggle("Look Around", false, function(v) Flags.HVHLookAround = v end)
 page:Label(" HVH  ")
-page:Toggle("KD 平衡", true, function(v) Flags.HVHKDBalance = v end)
+page:Toggle("KD Balance", true, function(v) Flags.HVHKDBalance = v end)
 page:Slider("Target KD", 10, 50, 25, function(v) Flags.HVHTargetKD = v end)
-page:Toggle("爆頭率限制", true, function(v) Flags.HVHHSLimit = v end)
+page:Toggle("HS Rate Limit", true, function(v) Flags.HVHHSLimit = v end)
 page:Slider("Max HS Ratio", 20, 80, 50, function(v) Flags.HVHMaxHS = v end)
-page:Toggle("傷害分佈", true, function(v) Flags.HVHDmgDist = v end)
-page:Toggle("武器旋轉", false, function(v) Flags.HVHWepRot = v end)
+page:Toggle("Damage Distribution", true, function(v) Flags.HVHDmgDist = v end)
+page:Toggle("Weapon Rotation", false, function(v) Flags.HVHWepRot = v end)
 page:Label(" HVH  ")
-page:Toggle("風險時恐慌", true, function(v) Flags.HVHPanic = v end)
+page:Toggle("Panic On Risk", true, function(v) Flags.HVHPanic = v end)
 page:Slider("Panic Risk Level", 50, 90, 70, function(v) Flags.HVHPanicLevel = v end)
-page:Toggle("被封時換服", true, function(v) Flags.HVHServerHop = v end)
+page:Toggle("Server Hop On Ban", true, function(v) Flags.HVHServerHop = v end)
 page:Slider("Ban Risk Threshold", 60, 95, 80, function(v) Flags.HVHBanThreshold = v end)
-page:Toggle("自動帳號切換", false, function(v) Flags.HVHAccSwitch = v end)
+page:Toggle("Auto Account Switch", false, function(v) Flags.HVHAccSwitch = v end)
 page:Label("F9 = Safe Mode | F10 = Nuclear Panic")
 
  -- HVH Safe Mode Engine
@@ -1823,15 +1823,15 @@ end)
 -- Make ALL client modifications appear server-side legitimate
 
 page:Label(" SSVL  ")
-page:Toggle("啟用SSVL", true, function(v) Flags.SSVL = v end)
-page:Toggle("速度上限", true, function(v) Flags.SSVLVelCap = v end)
+page:Toggle("Enable SSVL", true, function(v) Flags.SSVL = v end)
+page:Toggle("Velocity Cap", true, function(v) Flags.SSVLVelCap = v end)
 page:Slider("Max Velocity", 10, 200, 60, function(v) Flags.SSVLMaxVel = v end)
-page:Toggle("位置漂移", true, function(v) Flags.SSVLDrift = v end)
-page:Toggle("加速限制", true, function(v) Flags.SSVLAccel = v end)
+page:Toggle("Position Drift", true, function(v) Flags.SSVLDrift = v end)
+page:Toggle("Accel Limit", true, function(v) Flags.SSVLAccel = v end)
 page:Slider("Max Acceleration", 20, 500, 100, function(v) Flags.SSVLMaxAccel = v end)
-page:Toggle("角速度限制", true, function(v) Flags.SSVLAngular = v end)
+page:Toggle("Angular Vel Limit", true, function(v) Flags.SSVLAngular = v end)
 page:Slider("Max Angular Vel", 10, 200, 80, function(v) Flags.SSVLMaxAngular = v end)
-page:Toggle("延遲模擬", true, function(v) Flags.SSVLPingSim = v end)
+page:Toggle("Ping Simulation", true, function(v) Flags.SSVLPingSim = v end)
 page:Slider("Fake Ping Offset", -50, 100, 30, function(v) Flags.SSVLPingOff = v end)
 
  -- SSVL Engine
@@ -1935,24 +1935,24 @@ end)
 -- SECTION 14: FINGERPRINT ROTATION
 -- Rotate player behavior fingerprint to avoid signature matching
 
-page:Label("呼叫堆疊與調試")
-page:Toggle("指紋輪替", true, function(v) Flags.FPRotation = v end)
+page:Label("Call Stack & Debug")
+page:Toggle("Fingerprint Rotation", true, function(v) Flags.FPRotation = v end)
 page:Slider("Rotation Interval", 30, 300, 120, function(v) Flags.FPRotInterval = v end)
-page:Toggle("名字指紋", true, function(v) Flags.FPName = v end)
-page:Toggle("移動指紋", true, function(v) Flags.FPMove = v end)
-page:Toggle("瞄準指紋", true, function(v) Flags.FPAim = v end)
-page:Toggle("時序指紋", true, function(v) Flags.FPTiming = v end)
-page:Toggle("攝影機指紋", true, function(v) Flags.FPCamera = v end)
+page:Toggle("Name Fingerprint", true, function(v) Flags.FPName = v end)
+page:Toggle("Move Fingerprint", true, function(v) Flags.FPMove = v end)
+page:Toggle("Aim Fingerprint", true, function(v) Flags.FPAim = v end)
+page:Toggle("Timing Fingerprint", true, function(v) Flags.FPTiming = v end)
+page:Toggle("Camera Fingerprint", true, function(v) Flags.FPCamera = v end)
 
  -- Fingerprint State
 local fpState = {
     CurrentProfile = 1,
     -- LastRotation = tick(),
     Profiles = {
-        {Name="Player_" .. math.random(1000,9999), MoveStyle="普通", AimStyle="平滑", TimingBase=80, CamSens=1.0},
-        {Name="Player_" .. math.random(1000,9999), MoveStyle="進攻", AimStyle="Flick", TimingBase=60, CamSens=1.2},
+        {Name="Player_" .. math.random(1000,9999), MoveStyle="Normal", AimStyle="Smooth", TimingBase=80, CamSens=1.0},
+        {Name="Player_" .. math.random(1000,9999), MoveStyle="Aggressive", AimStyle="Flick", TimingBase=60, CamSens=1.2},
         {Name="Player_" .. math.random(1000,9999), MoveStyle="Passive", AimStyle="Slow", TimingBase=120, CamSens=0.8},
-        {Name="Player_" .. math.random(1000,9999), MoveStyle="Mixed", AimStyle="自適應", TimingBase=90, CamSens=1.1},
+        {Name="Player_" .. math.random(1000,9999), MoveStyle="Mixed", AimStyle="Adaptive", TimingBase=90, CamSens=1.1},
         {Name="Player_" .. math.random(1000,9999), MoveStyle="Cautious", AimStyle="Precise", TimingBase=100, CamSens=0.9},
     },
 }
@@ -2010,13 +2010,13 @@ end)
 -- SECTION 15: TRAFFIC PATTERN MASKING
 -- Hide network traffic patterns from AC analysis
 
-page:Label("環境隱藏")
-page:Toggle("流量偽裝", true, function(v) Flags.TrafficMask = v end)
-page:Toggle("噪音注入", true, function(v) Flags.TrafficNoise = v end)
+page:Label("Environment Hide")
+page:Toggle("Traffic Masking", true, function(v) Flags.TrafficMask = v end)
+page:Toggle("Noise Injection", true, function(v) Flags.TrafficNoise = v end)
 page:Slider("Noise Level", 1, 10, 3, function(v) Flags.TrafficNoiseLvl = v end)
-page:Toggle("連射平滑", true, function(v) Flags.TrafficBurst = v end)
+page:Toggle("Burst Smooth", true, function(v) Flags.TrafficBurst = v end)
 page:Slider("Burst Window", 5, 50, 15, function(v) Flags.TrafficBurstWin = v end)
-page:Toggle("遠端指紋", true, function(v) Flags.TrafficRemoteFP = v end)
+page:Toggle("Remote Fingerprint", true, function(v) Flags.TrafficRemoteFP = v end)
 
  -- Traffic Masking Engine
 local trafficState = {
@@ -2100,14 +2100,14 @@ end)
 -- Evade machine learning based behavioral analysis
 
 page:Label(" ML  ")
-page:Toggle("機器學習規避", true, function(v) Flags.MLEvasion = v end)
+page:Toggle("ML Evasion", true, function(v) Flags.MLEvasion = v end)
 page:Slider("Human Score Target", 50, 95, 80, function(v) Flags.MLHumanScore = v end)
-page:Toggle("移動熵", true, function(v) Flags.MLEntropy = v end)
-page:Toggle("滑鼠熵", true, function(v) Flags.MLMouseEntropy = v end)
-page:Toggle("反應模擬", true, function(v) Flags.MLReaction = v end)
+page:Toggle("Movement Entropy", true, function(v) Flags.MLEntropy = v end)
+page:Toggle("Mouse Entropy", true, function(v) Flags.MLMouseEntropy = v end)
+page:Toggle("Reaction Simulation", true, function(v) Flags.MLReaction = v end)
 page:Slider("Reaction Variance", 10, 500, 150, function(v) Flags.MLReactionVar = v end)
-page:Toggle("決策延遲", true, function(v) Flags.MLDecision = v end)
-page:Toggle("微暫停", true, function(v) Flags.MLMicroPause = v end)
+page:Toggle("Decision Delay", true, function(v) Flags.MLDecision = v end)
+page:Toggle("Micro Pause", true, function(v) Flags.MLMicroPause = v end)
 
  -- ML Evasion Engine
 local mlState = {
@@ -2218,17 +2218,17 @@ BS.MLState = mlState
 -- SECTION 17: STATISTICAL ANOMALY SMOOTHING
 -- Ensure our stats don't trigger statistical detection
 
-page:Label("鉤子偽裝")
-page:Toggle("統計平滑", true, function(v) Flags.StatSmooth = v end)
-page:Toggle("KD 調節", true, function(v) Flags.StatKDReg = v end)
+page:Label("Hook Masking")
+page:Toggle("Stat Smoothing", true, function(v) Flags.StatSmooth = v end)
+page:Toggle("KD Regulation", true, function(v) Flags.StatKDReg = v end)
 page:Slider("Target KD", 10, 40, 20, function(v) Flags.StatTargetKD = v end)
-page:Toggle("爆頭率調節", true, function(v) Flags.StatHSReg = v end)
+page:Toggle("HS Rate Regulation", true, function(v) Flags.StatHSReg = v end)
 page:Slider("Max HS %", 20, 70, 45, function(v) Flags.StatMaxHS = v end)
-page:Toggle("傷害擴散", true, function(v) Flags.StatDmgSpread = v end)
-page:Toggle("擊殺時序分散", true, function(v) Flags.StatKillTiming = v end)
+page:Toggle("Damage Spread", true, function(v) Flags.StatDmgSpread = v end)
+page:Toggle("Kill Timing Spread", true, function(v) Flags.StatKillTiming = v end)
 page:Slider("Min Kill Gap", 1, 15, 3, function(v) Flags.StatMinKillGap = v end)
-page:Toggle("武器旋轉", true, function(v) Flags.StatWeaponRot = v end)
-page:Toggle("死亡暫存", false, function(v) Flags.StatDeathStage = v end)
+page:Toggle("Weapon Rotation", true, function(v) Flags.StatWeaponRot = v end)
+page:Toggle("Death Buffer", false, function(v) Flags.StatDeathStage = v end)
 
  -- Statistical Smoothing Engine
 local statState = {
@@ -2322,12 +2322,12 @@ BS.StatState = statState
 -- SECTION 18: ANTI-REPLAY PROTECTION
 -- Prevent AC from replaying our actions to detect cheats
 
-page:Label("字串混淆")
-page:Toggle("反重播", true, function(v) Flags.AntiReplay = v end)
-page:Toggle("動作模糊", true, function(v) Flags.ActionFuzz = v end)
-page:Slider("模糊量", 1, 20, 5, function(v) Flags.ActionFuzzAmt = v end)
-page:Toggle("序列隨機化", true, function(v) Flags.SeqShuffle = v end)
-page:Toggle("時序不同步", true, function(v) Flags.TimingDesync = v end)
+page:Label("String Obfuscation")
+page:Toggle("Anti Replay", true, function(v) Flags.AntiReplay = v end)
+page:Toggle("Action Fuzz", true, function(v) Flags.ActionFuzz = v end)
+page:Slider("Fuzz Amount", 1, 20, 5, function(v) Flags.ActionFuzzAmt = v end)
+page:Toggle("Sequence Randomize", true, function(v) Flags.SeqShuffle = v end)
+page:Toggle("Timing Desync", true, function(v) Flags.TimingDesync = v end)
 
  -- Anti-Replay Engine
 local replayState = {
@@ -2372,13 +2372,13 @@ end
 -- SECTION 19: MEMORY SIGNATURE EVASION
 -- Evade memory signature scanning
 
-page:Label("時序隨機化")
-page:Toggle("記憶體規避", true, function(v) Flags.MemEvasion = v end)
-page:Toggle("字串加密", true, function(v) Flags.MemStrEnc = v end)
-page:Toggle("物件混亂", true, function(v) Flags.MemObjScramble = v end)
-page:Toggle("引用清理", true, function(v) Flags.MemRefClean = v end)
+page:Label("Timing Randomize")
+page:Toggle("Memory Evasion", true, function(v) Flags.MemEvasion = v end)
+page:Toggle("String Encryption", true, function(v) Flags.MemStrEnc = v end)
+page:Toggle("Object Scramble", true, function(v) Flags.MemObjScramble = v end)
+page:Toggle("Reference Cleanup", true, function(v) Flags.MemRefClean = v end)
 page:Slider("Cleanup Interval", 10, 60, 20, function(v) Flags.MemCleanInt = v end)
-page:Toggle("GC混淆", true, function(v) Flags.MemGCObf = v end)
+page:Toggle("GC Obfuscation", true, function(v) Flags.MemGCObf = v end)
 
  -- Memory Evasion Engine
 local memEvadeState = {
@@ -2493,11 +2493,11 @@ end)
 -- Detect if running in analysis environment
 
 page:Label("  /  ")
-page:Toggle("反模擬", true, function(v) Flags.AntiEmulation = v end)
-page:Toggle("沙箱偵測", true, function(v) Flags.SandboxDetect = v end)
-page:Toggle("時序預警", true, function(v) Flags.TimingCanary = v end)
-page:Toggle("環境完整性", true, function(v) Flags.EnvIntegrity = v end)
-page:Toggle("自我治療", true, function(v) Flags.SelfHeal = v end)
+page:Toggle("Anti Emulation", true, function(v) Flags.AntiEmulation = v end)
+page:Toggle("Sandbox Detection", true, function(v) Flags.SandboxDetect = v end)
+page:Toggle("Timing Canary", true, function(v) Flags.TimingCanary = v end)
+page:Toggle("Env Integrity", true, function(v) Flags.EnvIntegrity = v end)
+page:Toggle("Self Heal", true, function(v) Flags.SelfHeal = v end)
 
  -- Anti-Emulation Engine
 local emulationState = {
@@ -2740,18 +2740,18 @@ end
 
 -- GUI
 page:Label(" HWID Spoofer ")
-page:Button({Name="生成硬體 ID"}, function() BS.HWIDSpoofer:Activate() end)
+page:Button({Name="Generate Hardware ID"}, function() BS.HWIDSpoofer:Activate() end)
 page:Separator()
 page:Label(" Ping Spoof ")
-page:Toggle("延遲偽造", false, function(v) if v then BS.PingSpoof:SetPing(Flags.FakePing or 50) else BS.PingSpoof:Disable() end end)
+page:Toggle("Lag Spoof", false, function(v) if v then BS.PingSpoof:SetPing(Flags.FakePing or 50) else BS.PingSpoof:Disable() end end)
 page:Slider("Fake Ping", 10, 200, 50, function(v) Flags.FakePing = v end)
 page:Separator()
 page:Label(" Anti-Screenshot ")
-page:Toggle("反截圖", false, function(v) if v then BS.AntiScreenshot:Activate() else BS.AntiScreenshot:Deactivate() end end)
+page:Toggle("Anti Screenshot", false, function(v) if v then BS.AntiScreenshot:Activate() else BS.AntiScreenshot:Deactivate() end end)
 page:Separator()
 page:Label(" Statistics ")
 page:Button({Name="Show Stats"}, function() print("[Stats] " .. BS.Stats:GetReport()) end)
-page:Button({Name="重置統計"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
+page:Button({Name="Reset Stats"}, function() BS.Stats.StartTime = tick() BS.Stats.Kills=0 BS.Stats.Deaths=0 BS.Stats.Headshots=0 BS.Stats.Shots=0 BS.Stats.Hits=0 BS.Stats.Damage=0 end)
 
 -- ═══════════════════════════════════════════════════════════════
 -- SECTION 22: GETFENV ENVIRONMENT LEAK PREVENTION

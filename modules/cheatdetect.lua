@@ -20,7 +20,7 @@ local lplr = Players.LocalPlayer
 
 if not BS.Win then warn("[Cheat Detect] BS.Win not available - ui.lua may have failed") return end
 local page = nil
-pcall(function() page = BS.Win:Tab("關於") end)
+pcall(function() page = BS.Win:Tab("About") end)
 if not page then warn("[CheatDetect] Failed to create tab!") return end
 if not page or not page.Toggle then warn("[CheatDetect] Failed to create tab!") return end
 
@@ -30,20 +30,20 @@ BS.CheatDetect = CD
 -- SECTION 1: 
 
 page:Label("   ")
-page:Toggle("作弊偵測", true, function(v) Flags.CheatDetect = v end)
-page:Toggle("自動掃描", true, function(v) Flags.CD_AutoScan = v end)
-page:Slider("掃描間隔", 1, 10, 3, function(v) Flags.CD_ScanInterval = v end)
-page:Slider("最低信心度", 30, 95, 60, function(v) Flags.CD_MinConfidence = v end)
-page:Toggle("顯示警告", true, function(v) Flags.CD_Alerts = v end)
-page:Toggle("自動舉報", false, function(v) Flags.CD_AutoReport = v end)
-page:Toggle("音效警告", true, function(v) Flags.CD_SoundAlert = v end)
-page:Toggle("大廳摘要", true, function(v) Flags.CD_LobbySummary = v end)
-page:Toggle("比賽開始掃描", true, function(v) Flags.CD_MatchStart = v end)
-page:Toggle("持續橫幅", true, function(v) Flags.CD_Banner = v end)
-page:Toggle("可疑玩家標記", true, function(v) Flags.CD_SuspectMarker = v end)
-page:Slider("警告閾值", 30, 90, 50, function(v) Flags.CD_AlertThreshold = v end)
-page:Slider("警示閾值", 50, 95, 70, function(v) Flags.CD_WarnThreshold = v end)
-page:Slider("嚴重閾值", 70, 99, 85, function(v) Flags.CD_CriticalThreshold = v end)
+page:Toggle("Cheat Detection", true, function(v) Flags.CheatDetect = v end)
+page:Toggle("Auto Scan", true, function(v) Flags.CD_AutoScan = v end)
+page:Slider("Scan Interval", 1, 10, 3, function(v) Flags.CD_ScanInterval = v end)
+page:Slider("Min Confidence", 30, 95, 60, function(v) Flags.CD_MinConfidence = v end)
+page:Toggle("Show Alerts", true, function(v) Flags.CD_Alerts = v end)
+page:Toggle("Auto Report", false, function(v) Flags.CD_AutoReport = v end)
+page:Toggle("Sound Alert", true, function(v) Flags.CD_SoundAlert = v end)
+page:Toggle("Lobby Summary", true, function(v) Flags.CD_LobbySummary = v end)
+page:Toggle("Round Start Scan", true, function(v) Flags.CD_MatchStart = v end)
+page:Toggle("Persistent Banner", true, function(v) Flags.CD_Banner = v end)
+page:Toggle("Suspect Marker", true, function(v) Flags.CD_SuspectMarker = v end)
+page:Slider("Alert Threshold", 30, 90, 50, function(v) Flags.CD_AlertThreshold = v end)
+page:Slider("Warn Threshold", 50, 95, 70, function(v) Flags.CD_WarnThreshold = v end)
+page:Slider("Critical Threshold", 70, 99, 85, function(v) Flags.CD_CriticalThreshold = v end)
 page:Button({Name=" ", Color=Color3.fromRGB(255, 50, 50)}, function()
     CD.fullScan()
 end)
@@ -57,20 +57,20 @@ end)
 -- SECTION 2: 
 
 page:Label("  ")
-page:Toggle("自瞄偵測", true, function(v) Flags.CD_Aimbot = v end)
-page:Toggle("穿牆偵測", true, function(v) Flags.CD_Wallhack = v end)
-page:Toggle("透視偵測", true, function(v) Flags.CD_ESP = v end)
-page:Toggle("觸發器偵測", true, function(v) Flags.CD_Trigger = v end)
-page:Toggle("旋轉瞄偵測", true, function(v) Flags.CD_Spin = v end)
-page:Toggle("傳送偵測", true, function(v) Flags.CD_Teleport = v end)
-page:Toggle("巨集偵測", true, function(v) Flags.CD_Macro = v end)
-page:Toggle("無後座偵測", true, function(v) Flags.CD_NoRecoil = v end)
-page:Toggle("靜默瞄準偵測", true, function(v) Flags.CD_SilentAim = v end)
-page:Toggle("瞬瞄偵測", true, function(v) Flags.CD_Snap = v end)
-page:Toggle("甩槍偵測", true, function(v) Flags.CD_Flick = v end)
-page:Toggle("後座偵測", true, function(v) Flags.CD_RCS = v end)
-page:Toggle("連跳偵測", true, function(v) Flags.CD_Bhop = v end)
-page:Toggle("第三人稱偵測", true, function(v) Flags.CD_ThirdPerson = v end)
+page:Toggle("Aimbot Detection", true, function(v) Flags.CD_Aimbot = v end)
+page:Toggle("Wallhack Detection", true, function(v) Flags.CD_Wallhack = v end)
+page:Toggle("ESP Detection", true, function(v) Flags.CD_ESP = v end)
+page:Toggle("Triggerbot Detection", true, function(v) Flags.CD_Trigger = v end)
+page:Toggle("Spin Aim Detection", true, function(v) Flags.CD_Spin = v end)
+page:Toggle("Teleport Detection", true, function(v) Flags.CD_Teleport = v end)
+page:Toggle("Macro Detection", true, function(v) Flags.CD_Macro = v end)
+page:Toggle("No Recoil Detection", true, function(v) Flags.CD_NoRecoil = v end)
+page:Toggle("Silent Aim Detection", true, function(v) Flags.CD_SilentAim = v end)
+page:Toggle("Flick Detection", true, function(v) Flags.CD_Snap = v end)
+page:Toggle("Flick Shot Detection", true, function(v) Flags.CD_Flick = v end)
+page:Toggle("RCS Detection", true, function(v) Flags.CD_RCS = v end)
+page:Toggle("Bhop Detection", true, function(v) Flags.CD_Bhop = v end)
+page:Toggle("Third Person Detection", true, function(v) Flags.CD_ThirdPerson = v end)
 
 -- CORE STATE  
 

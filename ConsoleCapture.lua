@@ -1,13 +1,13 @@
 --[[
     YagmurStrike Console Capture
     ========================
-    捕獲所有控制台輸出並保存到檔案
+    Capture all console output and save to file
     
-    用法:
-    1. 先貼這段到執行器執行
-    2. 然後貼 YagmurStrike 腳本執行
-    3. 所有控制台輸出會自動保存
-    4. 執行 BS.ExportLogs() 匯出到檔案
+    Usage:
+    1. Paste this into your executor first
+    2. Then paste the YagmurStrike script
+    3. All console output will be auto-saved
+    4. Run BS.ExportLogs() to export to file
 ]]
 
 -- ═══ Init ═══

@@ -12,50 +12,50 @@ local lplr = Players and Players.LocalPlayer
 
 if not BS.Win then warn("[Rage] BS.Win not available") return end
 local page = nil
-pcall(function() page = BS.Win:Tab("暴力") end)
+pcall(function() page = BS.Win:Tab("Rage") end)
 if not page then warn("[Rage] Failed to create tab!") return end
 
 -- ═══ SILENT AIM ═══
 page:Label(" Silent Aim ")
-page:Toggle("靜默瞄準", false, function(v) Flags.SilentAim = v end)
+page:Toggle("Silent Aim", false, function(v) Flags.SilentAim = v end)
 page:Slider("FOV", 10, 360, 140, function(v) Flags.SAFov = v end)
-page:Dropdown({Name="部位", Flag="SABone", Options={"Head","Chest","Pelvis"}, Default="Head"})
-page:Toggle("牆壁穿透", false, function(v) Flags.SAWall = v end)
-page:Slider("命中修正", 0, 100, 100, function(v) Flags.SAHitChance = v end)
+page:Dropdown({Name="Hitbox", Flag="SABone", Options={"Head","Chest","Pelvis"}, Default="Head"})
+page:Toggle("Wall Penetration", false, function(v) Flags.SAWall = v end)
+page:Slider("Hit Correction", 0, 100, 100, function(v) Flags.SAHitChance = v end)
 
 -- ═══ ANTI-AIM ═══
 page:Label(" Anti-Aim ")
-page:Toggle("反瞄準", false, function(v) Flags.AA = v end)
+page:Toggle("Anti-Aim", false, function(v) Flags.AA = v end)
 page:Dropdown({Name="Pitch", Flag="AAPitch", Options={"Static","Jitter","Spin","Down","Up","Random"}, Default="Static"})
 page:Dropdown({Name="Yaw", Flag="AAYaw", Options={"Spin","Back","Left","Right","Jitter","Random"}, Default="Spin"})
-page:Slider("旋轉速度", 1, 36, 18, function(v) Flags.AASpd = v end)
-page:Toggle("身體旋轉", false, function(v) Flags.AABodyYaw = v end)
-page:Slider("Body Yaw 度數", 1, 180, 90, function(v) Flags.AABodyYawDeg = v end)
+page:Slider("Strafe Speed", 1, 36, 18, function(v) Flags.AASpd = v end)
+page:Toggle("Body Rotation", false, function(v) Flags.AABodyYaw = v end)
+page:Slider("Body Yaw Degrees", 1, 180, 90, function(v) Flags.AABodyYawDeg = v end)
 page:Dropdown({Name="Fake Yaw", Flag="AAFakeYaw", Options={"Off","Left","Right","Jitter"}, Default="Off"})
 
 -- ═══ FAKE LAG ═══
 page:Label(" Fake Lag ")
-page:Toggle("假延遲", false, function(v) Flags.FL = v end)
-page:Slider("封包數", 1, 16, 8, function(v) Flags.FLChoke = v end)
-page:Dropdown({Name="模式", Flag="FLStyle", Options={"Static","Break","Adaptive"}, Default="Static"})
-page:Toggle("FL 觸發器", false, function(v) Flags.FLTrigger = v end)
+page:Toggle("Fake Lag", false, function(v) Flags.FL = v end)
+page:Slider("Packet Count", 1, 16, 8, function(v) Flags.FLChoke = v end)
+page:Dropdown({Name="Mode", Flag="FLStyle", Options={"Static","Break","Adaptive"}, Default="Static"})
+page:Toggle("FL Triggerbot", false, function(v) Flags.FLTrigger = v end)
 
 -- ═══ RESOLVER ═══
 page:Label(" Resolver ")
-page:Toggle("解析器", false, function(v) Flags.Resolver = v end)
-page:Toggle("自動反制", false, function(v) Flags.AutoResolve = v end)
-page:Dropdown({Name="解析模式", Flag="ResolverMode", Options={"Velocity","Brute","SpinDetect","Adaptive"}, Default="Velocity"})
+page:Toggle("Parser", false, function(v) Flags.Resolver = v end)
+page:Toggle("Auto Resolve", false, function(v) Flags.AutoResolve = v end)
+page:Dropdown({Name="Resolver Mode", Flag="ResolverMode", Options={"Velocity","Brute","SpinDetect","Adaptive"}, Default="Velocity"})
 
 -- ═══ RAGE BOT ═══
 page:Label(" Rage Bot ")
-page:Toggle("暴力瞄準", false, function(v) Flags.Ragebot = v end)
-page:Slider("命中率", 50, 100, 100, function(v) Flags.RageHC = v end)
-page:Toggle("自動開火", false, function(v) Flags.RageAF = v end)
-page:Toggle("雙發", false, function(v) Flags.RageDT = v end)
-page:Toggle("刀殺", false, function(v) Flags.RageKnife = v end)
+page:Toggle("Rage Aim", false, function(v) Flags.Ragebot = v end)
+page:Slider("Hit Rate", 50, 100, 100, function(v) Flags.RageHC = v end)
+page:Toggle("Auto Fire", false, function(v) Flags.RageAF = v end)
+page:Toggle("Double Shot", false, function(v) Flags.RageDT = v end)
+page:Toggle("Knife Kill", false, function(v) Flags.RageKnife = v end)
 page:Slider("Rage FOV", 10, 360, 360, function(v) Flags.RageFOV = v end)
-page:Dropdown({Name="Rage 部位", Flag="RageBone", Options={"Head","Neck","Chest","Pelvis","Closest"}, Default="Head"})
-page:Toggle("優先爆頭", false, function(v) Flags.RageHeadshot = v end)
+page:Dropdown({Name="Rage Hitbox", Flag="RageBone", Options={"Head","Neck","Chest","Pelvis","Closest"}, Default="Head"})
+page:Toggle("Prioritize Headshot", false, function(v) Flags.RageHeadshot = v end)
 
 -- ═══ LOGIC ═══
 local RAGE = {}

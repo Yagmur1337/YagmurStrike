@@ -20,7 +20,7 @@ local lplr = Players.LocalPlayer
 
 if not BS.Win then warn("[Combat Assist] BS.Win not available - ui.lua may have failed") return end
 local page = nil
-pcall(function() page = BS.Win:Tab("雜項") end)
+pcall(function() page = BS.Win:Tab("Misc") end)
 if not page then warn("[CombatAssist] Failed to create tab!") return end
 if not page or not page.Toggle then warn("[CombatAssist] Failed to create tab!") return end
 
@@ -41,16 +41,16 @@ CA.SessionStats = {
 -- SECTION 1: CHAT ASSISTANT
 -- Auto-reply, taunts, callouts, vote manipulation
 
-page:Label("聊天助手")
-page:Toggle("聊天助手", false, function(v) Flags.ChatAssistant = v end)
-page:Toggle("自動回覆", false, function(v) Flags.ChatAutoReply = v end)
-page:Toggle("擊殺自動嘲諷", false, function(v) Flags.ChatAutoTaunt = v end)
-page:Toggle("自動 GG", false, function(v) Flags.ChatAutoGG = v end)
-page:Toggle("自動隊友報位", false, function(v) Flags.ChatAutoCallout = v end)
-page:Toggle("刷屏繞過", false, function(v) Flags.ChatSpamBypass = v end)
-page:Slider("聊天延遲", 1, 10, 3, function(v) Flags.ChatDelay = v end)
-page:Dropdown({Name="聊天風格", Flag="ChatStyle", Options={"普通","毒舌","友善","中文","隨機"}, Default="Normal"})
-page:Button({Name="發送自定義訊息", Color=Color3.fromRGB(80, 80, 200)}, function()
+page:Label("Chat Assistant")
+page:Toggle("Chat Assistant", false, function(v) Flags.ChatAssistant = v end)
+page:Toggle("Auto Reply", false, function(v) Flags.ChatAutoReply = v end)
+page:Toggle("Auto Kill Taunt", false, function(v) Flags.ChatAutoTaunt = v end)
+page:Toggle("Auto GG", false, function(v) Flags.ChatAutoGG = v end)
+page:Toggle("Auto Callout", false, function(v) Flags.ChatAutoCallout = v end)
+page:Toggle("Spam Bypass", false, function(v) Flags.ChatSpamBypass = v end)
+page:Slider("Chat Delay", 1, 10, 3, function(v) Flags.ChatDelay = v end)
+page:Dropdown({Name="Chat Style", Flag="ChatStyle", Options={"Normal","Toxic","Friendly","English","Random"}, Default="Normal"})
+page:Button({Name="Send Custom Message", Color=Color3.fromRGB(80, 80, 200)}, function()
     -- Open a simple chat input prompt
     pcall(function()
         game:GetService("StarterGui"):SetCore("SendNotification", {
@@ -277,11 +277,11 @@ task.spawn(function() CA.startChatListener() end)
 -- Detect who is watching you
 
 page:Label("Spectator Detection")
-page:Toggle("觀戰列表", false, function(v) Flags.SpectatorList = v end)
-page:Toggle("觀戰提醒", false, function(v) Flags.SpectatorAlert = v end)
-page:Toggle("觀戰歷史", true, function(v) Flags.SpectatorHistory = v end)
-page:Toggle("對特定玩家隱藏", false, function(v) Flags.HideSpectator = v end)
-page:Slider("掃描間隔", 1, 10, 2, function(v) Flags.SpecScanInterval = v end)
+page:Toggle("Spectator List", false, function(v) Flags.SpectatorList = v end)
+page:Toggle("Spectator Alert", false, function(v) Flags.SpectatorAlert = v end)
+page:Toggle("Spectator History", true, function(v) Flags.SpectatorHistory = v end)
+page:Toggle("Hide From Specific Player", false, function(v) Flags.HideSpectator = v end)
+page:Slider("Scan Interval", 1, 10, 2, function(v) Flags.SpecScanInterval = v end)
 
  -- Spectator Detection Engine
 local specState = {
@@ -379,15 +379,15 @@ CA.SpectatorState = specState
 -- SECTION 3: PLAYER RATING SYSTEM
 -- Rate and remember players across sessions
 
-page:Label("玩家評分")
-page:Toggle("玩家評分", true, function(v) Flags.PlayerRating = v end)
-page:Toggle("自動評分", true, function(v) Flags.AutoRate = v end)
-page:Slider("威脅閾值", 50, 100, 70, function(v) Flags.ThreatThreshold = v end)
-page:Toggle("顯示玩家標籤", true, function(v) Flags.ShowPlayerTags = v end)
-page:Button({Name="查看玩家統計", Color=Color3.fromRGB(100, 200, 100)}, function()
+page:Label("Player Rating")
+page:Toggle("Player Rating", true, function(v) Flags.PlayerRating = v end)
+page:Toggle("Auto Rate", true, function(v) Flags.AutoRate = v end)
+page:Slider("Threat Threshold", 50, 100, 70, function(v) Flags.ThreatThreshold = v end)
+page:Toggle("Show Player Tags", true, function(v) Flags.ShowPlayerTags = v end)
+page:Button({Name="View Player Stats", Color=Color3.fromRGB(100, 200, 100)}, function()
     CA.showPlayerStats()
 end)
-page:Button({Name="重置所有評分", Color=Color3.fromRGB(200, 100, 100)}, function()
+page:Button({Name="Reset All Ratings", Color=Color3.fromRGB(200, 100, 100)}, function()
     CA.PlayerRatings = {}
     pcall(function()
          StarterGui:SetCore("SendNotification", {
@@ -418,7 +418,7 @@ function CA.ratePlayer(player, rating, reason)
             DamageReceived = 0,
             -- LastSeen = tick(),
             Notes = {},
-            ThreatLevel = "普通", -- Normal, Dangerous, Smurf, Cheater, Noob
+            ThreatLevel = "Normal", -- Normal, Dangerous, Smurf, Cheater, Noob
         }
     end
 
@@ -526,10 +526,10 @@ CA.RatingState = ratingState
 -- SECTION 4: MAP MEMORY
 -- Remember settings per map
 
-page:Label("地圖記憶")
-page:Toggle("地圖記憶", true, function(v) Flags.MapMemory = v end)
-page:Toggle("自動套用設定", false, function(v) Flags.MapAutoApply = v end)
-page:Toggle("記錄表現", true, function(v) Flags.MapRecordPerf = v end)
+page:Label("Map Memory")
+page:Toggle("Map Memory", true, function(v) Flags.MapMemory = v end)
+page:Toggle("Auto Apply Settings", false, function(v) Flags.MapAutoApply = v end)
+page:Toggle("Record Performance", true, function(v) Flags.MapRecordPerf = v end)
 page:Button({Name="Save Current Map Settings", Color=Color3.fromRGB(100, 150, 255)}, function()
     CA.saveMapSettings()
 end)
@@ -676,12 +676,12 @@ CA.MapState = mapState
 -- SECTION 5: SESSION STATISTICS
 -- Track session performance
 
-page:Label("場次統計")
-page:Toggle("場次統計", true, function(v) Flags.SessionStats = v end)
-page:Button({Name="顯示場次統計", Color=Color3.fromRGB(200, 200, 100)}, function()
+page:Label("Session Stats")
+page:Toggle("Session Stats", true, function(v) Flags.SessionStats = v end)
+page:Button({Name="Show Session Stats", Color=Color3.fromRGB(200, 200, 100)}, function()
     CA.showSessionStats()
 end)
-page:Button({Name="重置場次統計", Color=Color3.fromRGB(200, 100, 100)}, function()
+page:Button({Name="Reset Session Stats", Color=Color3.fromRGB(200, 100, 100)}, function()
     CA.SessionStats = {
         Kills = 0, Deaths = 0, Headshots = 0, Shots = 0,
         HitCount = 0, DamageDealt = 0, Accuracy = 0,

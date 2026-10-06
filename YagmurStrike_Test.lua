@@ -1,17 +1,17 @@
 --[[
     YagmurStrike Test Suite v2.0
     ========================
-    完整執行時測試工具 - 6 個測試階段
+    Full runtime test Utility - 6 test stages
     
-    測試項目:
-    1. HTTP 方法偵測 + 速度測試
-    2. 全域變數 + 服務測試
-    3. 所有 21 個模組 (下載+編譯+執行+依賴)
-    4. GUI 建立 + 操作測試
-    5. 核心功能測試
-    6. 版本 + 安全檢查
+    Test items:
+    1. HTTP method detection + speed test
+    2. Global variables + service test
+    3. All 21 modules (download+compile+execute+deps)
+    4. GUI creation + operation test
+    5. Core function test
+    6. Version + security check
     
-    用法: 貼到執行器直接執行
+    Usage: Paste directly into executor and run
 ]]
 
 if game.PlaceId ~= 114234929420007 then
@@ -172,13 +172,13 @@ local MODULES = {
 }
 
 local MOD_CN = {
-    compat="兼容層", core="核心", ui="介面", api="API",
-    combat="戰鬥系統", esp="透視系統",
-    hud="HUD", killeffects="擊殺特效", utility="工具", combatassist="戰鬥輔助",
-    world="世界",
-    rage="暴力系統", pingadapt="延遲適應", smartai="智能AI",
-    settings="設定", stealth="隱身系統", cheatdetect="作弊偵測",
-    bypass="反檢測", errorhandler="錯誤處理", events="事件系統", luau_detect="Luau偵測",
+    compat="Compat Layer", core="Core", ui="Interface", api="API",
+    combat="Combat System", esp="ESP System",
+    hud="HUD", killeffects="Kill Effects", utility="Utility", combatassist="Combat Assist",
+    world="World",
+    rage="Rage System", pingadapt="Lag Adaptation", smartai="Smart AI",
+    settings="Settings", stealth="Stealth System", cheatdetect="Cheat Detection",
+    bypass="Anti-Cheat Bypass", errorhandler="Error Handler", events="Event System", luau_detect="Luau Detect",
 }
 
 _G.BS = _G.BS or {}; _G.Flags = _G.Flags or {}; _G.BS.Flags = _G.Flags

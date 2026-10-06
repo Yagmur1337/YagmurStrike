@@ -663,8 +663,8 @@ BS.Bypass = Bypass
 -- Hide all traces of script injection from AC
 
 -- Hide injection artifacts
--- 注射偽裝系統已停用：每 20 秒隱藏 BS_ GUI 會導致遊戲 UI 消失
--- 保留 workspace 物件清理（只清理非 GUI 的 3D 物件）
+-- Injection masking disabled: hiding BS_ GUI every 20s causes game UI to disappear
+-- Keep workspace object cleanup (only clean non-GUI 3D objects)
 task.spawn(function()
     while true do task.wait(60)
         pcall(function()
@@ -1522,10 +1522,10 @@ local signatureEvasion = {
 local AC_PATTERNS = {
     -- String patterns that AC scans for
     Strings = {
-        -- "自瞄", "aimbot", "透視", "esp",
-        -- "穿牆", "wallhack", "NoClip", "noclip",
+        -- "Aimbot", "aimbot", "ESP", "esp",
+        -- "Wallhack", "wallhack", "NoClip", "noclip",
         -- "SpeedHack", "speedhack", "TriggerBot",
-        -- "SilentAim", "silentaim", "連跳", "bhop",
+        -- "SilentAim", "silentaim", "Bunny Hop", "bhop",
         -- "YagmurStrike", "FreeBuff",
         -- Exploit API names
         -- "getrawmetatable", "hookmetamethod", "hookfunction",
