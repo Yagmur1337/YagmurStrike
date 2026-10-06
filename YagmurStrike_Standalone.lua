@@ -1,4 +1,4 @@
---[[YagmurStrike v4.1 - Comprehensive Bug Fix + AI Enhancement Release]]
+--[[YagmurStrike v4.6 - Comprehensive Bug Fix + AI Enhancement Release]]
 
 if game.PlaceId ~= 114234929420007 then
     warn('[YagmurStrike] Wrong game!')
@@ -10,7 +10,7 @@ _G.BS = _G.BS or {}
 _G.Flags = Flags
 _G.BS.Flags = Flags
 
-local CURRENT_VERSION = '4.1'
+local CURRENT_VERSION = '4.6'
 local t0 = tick()
 local BASE_URLS = {
     "https://cdn.jsdelivr.net/gh/Yagmur1337/YagmurStrike@main/modules/",
@@ -56,7 +56,7 @@ local function httpGet(url)
 end
 
 -- Version check
-local VERSION_URL = "https://cdn.jsdelivr.net/gh/jiajia67-code/YagmurStrike@main/Roblox-YagmurStrike/version.json"
+local VERSION_URL = "https://raw.githubusercontent.com/Yagmur1337/YagmurStrike/main/version.json"
 local latestVersion = nil
 local changelog = {}
 local updateCheckDone = false
