@@ -97,9 +97,9 @@ local function getSilentAimTarget()
     local bestTarget = nil
     local bestPos = nil
 
-    for _, player in pairs(Players:GetPlayers()) do
+    for _, player in pairs(BS.GetPlayers()) do
         if player ~= lplr and BS.enemies and player in (BS.enemies() or {}) then
-            local char = player.Character
+            local char = BS.GetCharacter(player)
             if not char then continue end
             local hrp = char:FindFirstChild("HumanoidRootPart")
             local hum = char:FindFirstChildOfClass("Humanoid")
@@ -109,7 +109,7 @@ local function getSilentAimTarget()
             if not Flags.SAWall then
                 local rayParams = RaycastParams.new()
                 rayParams.FilterType = Enum.RaycastFilterType.Exclude
-                rayParams.FilterDescendantsInstances = {lplr.Character}
+                rayParams.FilterDescendantsInstances = {BS.GetCharacter(lplr)}
                 local origin = cam.CFrame.Position
                 local dir = (hrp.Position - origin).Unit * (hrp.Position - origin).Magnitude
                 local result = Workspace:Raycast(origin, dir, rayParams)
@@ -151,8 +151,8 @@ RAGE.SilentPosition = nil
 -- RESOLVER — Anti-Bruteforce Anti-Aim Detection
 -- ═══════════════════════════════════════════════════════════════
 local function updateResolverData(player)
-    if not player or not player.Character then return end
-    local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+    if not player or not BS.GetCharacter(player) then return end
+    local hrp = BS.GetCharacter(player):FindFirstChild("HumanoidRootPart")
     if not hrp then return end
 
     local uid = tostring(player.UserId)
@@ -181,8 +181,8 @@ local function updateResolverData(player)
 end
 
 local function resolvePlayer(player)
-    if not Flags.Resolver or not player or not player.Character then return nil end
-    local hrp = player.Character:FindFirstChild("HumanoidRootPart")
+    if not Flags.Resolver or not player or not BS.GetCharacter(player) then return nil end
+    local hrp = BS.GetCharacter(player):FindFirstChild("HumanoidRootPart")
     if not hrp then return nil end
 
     local uid = tostring(player.UserId)
@@ -265,7 +265,7 @@ end
 local function applyFakeLag()
     if not Flags.FL or not BS.alive or not BS.alive() then return end
 
-    local char = lplr.Character
+    local char = BS.GetCharacter(lplr)
     if not char then return end
     local hrp = char:FindFirstChild("HumanoidRootPart")
     if not hrp then return end
@@ -344,9 +344,9 @@ local function getRageTarget()
     local bestTarget = nil
     local bestPos = nil
 
-    for _, player in pairs(Players:GetPlayers()) do
+    for _, player in pairs(BS.GetPlayers()) do
         if player ~= lplr and BS.enemies and player in (BS.enemies() or {}) then
-            local char = player.Character
+            local char = BS.GetCharacter(player)
             if not char then continue end
             local hrp = char:FindFirstChild("HumanoidRootPart")
             local hum = char:FindFirstChildOfClass("Humanoid")
@@ -436,7 +436,7 @@ RunService.Heartbeat:Connect(function()
             local bodyYaw = Flags.AABodyYaw
             local bodyDeg = Flags.AABodyYawDeg or 90
 
-            local char = lplr.Character
+            local char = BS.GetCharacter(lplr)
             if not char then return end
             local hrp = char:FindFirstChild("HumanoidRootPart")
             if not hrp then return end
@@ -500,7 +500,7 @@ RunService.Heartbeat:Connect(function()
     -- Resolver data tracking
     pcall(function()
         if Flags.Resolver then
-            for _, player in pairs(Players:GetPlayers()) do
+            for _, player in pairs(BS.GetPlayers()) do
                 if player ~= lplr then
                     updateResolverData(player)
                 end

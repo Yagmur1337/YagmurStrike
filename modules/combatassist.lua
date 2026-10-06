@@ -298,9 +298,9 @@ task.spawn(function()
             pcall(function()
                 local newSpectators = {}
 
-                for _, player in pairs(Players:GetPlayers()) do
+                for _, player in pairs(BS.GetPlayers()) do
                     if player ~= lplr then
-                        local cam = player.Character and player and player.Character:FindFirstChild("Humanoid")
+                        local cam = BS.GetCharacter(player) and player and BS.GetCharacter(player):FindFirstChild("Humanoid")
                         if cam then
                             -- Check if their camera is following us
                             -- In Roblox, we can't directly check others' cameras
@@ -308,9 +308,9 @@ task.spawn(function()
                         end
 
                         -- Check if player has no character (spectating)
-                        local hasChar = player.Character and
-                            player and player.Character:FindFirstChildOfClass("Humanoid") and
-                            player and player.Character:FindFirstChildOfClass("Humanoid").Health > 0
+                        local hasChar = BS.GetCharacter(player) and
+                            player and BS.GetCharacter(player):FindFirstChildOfClass("Humanoid") and
+                            player and BS.GetCharacter(player):FindFirstChildOfClass("Humanoid").Health > 0
 
                         if not hasChar then
                             -- Might be in spectator mode
@@ -326,8 +326,8 @@ task.spawn(function()
                         -- Alternative: Check if they're near us but not moving (watching)
                         if hasChar then
                             local myHRP = BS.hrp and BS.hrp()
-                            local theirHRP = player and player.Character:FindFirstChild("HumanoidRootPart")
-                            local theirHum = player and player.Character:FindFirstChildOfClass("Humanoid")
+                            local theirHRP = player and BS.GetCharacter(player):FindFirstChild("HumanoidRootPart")
+                            local theirHum = player and BS.GetCharacter(player):FindFirstChildOfClass("Humanoid")
                             if myHRP and theirHRP and theirHum then
                                 local dist = (myHRP.Position - theirHRP.Position).Magnitude
                                 local vel = theirHRP.AssemblyLinearVelocity.Magnitude

@@ -1096,10 +1096,10 @@ task.spawn(function()
             pcall(function()
                 -- Detect if being kicked
                 localgui=lplr and lplr.PlayerGui and lplr and lplr.PlayerGui and lplr.PlayerGui:FindFirstChild("YagmurStrike_GUI")
-                if not lplr.Character and not Flags.StealthEmgDisconnect then
+                if not BS.GetCharacter(lplr) and not Flags.StealthEmgDisconnect then
                     -- Might be kicked: try to rejoin
                     task.wait(5)
-                    if not lplr.Character then
+                    if not BS.GetCharacter(lplr) then
                         pcall(function()
                             game:GetService("TeleportService"):Teleport(game.PlaceId,lplr)
                         end)
@@ -1284,7 +1284,7 @@ page:Button({Name=" EMERGENCY: Nuclear Disable", Color=Color3.fromRGB(200, 0, 0)
     end)
     -- Restore character
     pcall(function()
-        local char = lplr.Character
+        local char = BS.GetCharacter(lplr)
         if char then
             for _, part in pairs(char:GetDescendants()) do
                 if part:IsA("BasePart") then

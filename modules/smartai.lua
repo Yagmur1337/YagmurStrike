@@ -107,7 +107,7 @@ end
 -- Update enemy profile with new observation
 local function updateEnemyProfile(player, dt)
     local profile = getEnemyProfile(player)
-    local char = player.Character
+    local char = BS.GetCharacter(player)
     if not char then return end
     local hrp = char:FindFirstChild("HumanoidRootPart")
     if not hrp then return end
@@ -190,9 +190,9 @@ function AI.SelectTarget(maxDist, fov)
 
     local candidates = {}
 
-    for _, player in pairs(Players:GetPlayers()) do
+    for _, player in pairs(BS.GetPlayers()) do
         if player == lplr then continue end
-        local char = player.Character
+        local char = BS.GetCharacter(player)
         if not char then continue end
         local hrp = char:FindFirstChild("HumanoidRootPart")
         local hum = char:FindFirstChildOfClass("Humanoid")
@@ -421,9 +421,9 @@ task.spawn(function()
     while true do
         task.wait(0.3)
         pcall(function()
-            for _, player in pairs(Players:GetPlayers()) do
-                if player ~= lplr and player.Character then
-                    local hum = player.Character:FindFirstChildOfClass("Humanoid")
+            for _, player in pairs(BS.GetPlayers()) do
+                if player ~= lplr and BS.GetCharacter(player) then
+                    local hum = BS.GetCharacter(player):FindFirstChildOfClass("Humanoid")
                     if hum then
                         local prevHP = prevHealth[player.UserId] or hum.Health
                         if prevHP > 0 and hum.Health <= 0 then
@@ -431,7 +431,7 @@ task.spawn(function()
                             if lplr.Team and player.Team == lplr.Team then isEnemy = false end
                             if isEnemy then
                                 AIState.SessionKills = AIState.SessionKills + 1
-                                local tool = lplr.Character and lplr.Character:FindFirstChildWhichIsA("Tool")
+                                local tool = BS.GetCharacter(lplr) and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
                                 -- Simple headshot detection
                                 if tool then AIState.SessionHits = AIState.SessionHits + 1 end
                             end
@@ -456,7 +456,7 @@ task.spawn(function()
             AIState.Playstyle = mode
 
             -- Update enemy profiles
-            for _, player in pairs(Players:GetPlayers()) do
+            for _, player in pairs(BS.GetPlayers()) do
                 if player ~= lplr then
                     updateEnemyProfile(player, 2)
                 end

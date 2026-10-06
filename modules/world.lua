@@ -264,7 +264,7 @@ task.spawn(function()
 
                     local params = RaycastParams.new()
                     params.FilterType = Enum.RaycastFilterType.Exclude
-                    params.FilterDescendantsInstances = {lplr.Character}
+                    params.FilterDescendantsInstances = {BS.GetCharacter(lplr)}
                     local result = workspace:Raycast(pos, newPos - pos, params)
 
                     if result then
@@ -312,20 +312,20 @@ task.spawn(function()
     while task.wait(0.5) do
         if Flags.SpectatorList then
             pcall(function()
-                local myChar = lplr.Character
+                local myChar = BS.GetCharacter(lplr)
                 local myHRP = myChar and myChar:FindFirstChild("HumanoidRootPart")
                 if not myHRP then return end
 
                 local spectators = {}
-                for _, player in pairs(Players:GetPlayers()) do
+                for _, player in pairs(BS.GetPlayers()) do
                     if player ~= lplr then
-                        local pChar = player.Character
-                        if pChar then
-                            local pHRP = pChar:FindFirstChild("HumanoidRootPart")
-                            local pHum = pChar:FindFirstChildOfClass("Humanoid")
+                        local BS.GetCharacter(player) = BS.GetCharacter(player)
+                        if BS.GetCharacter(player) then
+                            local pHRP = BS.GetCharacter(player):FindFirstChild("HumanoidRootPart")
+                            local pHum = BS.GetCharacter(player):FindFirstChildOfClass("Humanoid")
                             if pHRP and pHum and pHum.Health > 0 then
                                 -- Method 1: Check if player's camera is looking at us
-                                local theirCam = pChar:FindFirstChildOfClass("Camera")
+                                local theirCam = BS.GetCharacter(player):FindFirstChildOfClass("Camera")
                                 -- Method 2: Check if dead player's camera subject is us (spectator mode)
                                 -- Method 3: Check if player has no character but is in camera mode
                                 local isSpectating = false
@@ -440,7 +440,7 @@ task.spawn(function()
 end)
 
  -- Cleanup
-lplr.CharacterRemoving:Connect(function()
+BS.GetCharacter(lplr)Removing:Connect(function()
     clearTrajectory()
     -- Restore lighting
     pcall(function()
@@ -625,7 +625,7 @@ task.spawn(function()
             pcall(function()
                 local cam = workspace.CurrentCamera
                 -- Counter recoil by adjusting camera
-                local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
+                local tool = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildOfClass("Tool")
                 if tool and UIS:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
                     -- Apply anti-recoil
                     cam.CFrame = cam.CFrame * CFrame.new(0, 0, 0)
@@ -660,15 +660,15 @@ task.spawn(function()
         task.wait(0.5)
         if Flags.SpectatorList then
             pcall(function()
-                local myChar = lplr.Character
+                local myChar = BS.GetCharacter(lplr)
                 if not myChar then return end
                 local myHead = myChar:FindFirstChild("Head")
                 if not myHead then return end
                 
                 local specs = {}
-                for _, p in pairs(Players:GetPlayers()) do
-                    if p ~= lplr and p.Character then
-                        local cam = p and p.Character:FindFirstChildOfClass("Camera")
+                for _, p in pairs(BS.GetPlayers()) do
+                    if p ~= lplr and BS.GetCharacter(p) then
+                        local cam = p and BS.GetCharacter(p):FindFirstChildOfClass("Camera")
                         if cam and cam.CameraSubject == myHead then
                             table.insert(specs, p.Name)
                         end
@@ -742,9 +742,9 @@ function BS.Chams:Apply()
         return
     end
     pcall(function()
-        for _, player in ipairs(Players:GetPlayers()) do
-            if player ~= lplr and player.Character then
-                for _, part in ipairs(player.Character:GetDescendants()) do
+        for _, player in ipairs(BS.GetPlayers()) do
+            if player ~= lplr and BS.GetCharacter(player) then
+                for _, part in ipairs(BS.GetCharacter(player):GetDescendants()) do
                     if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
                         if not part:FindFirstChild("BS_Cham") then
                             local highlight = Instance.new("Highlight")
@@ -765,9 +765,9 @@ end
 
 function BS.Chams:Remove()
     pcall(function()
-        for _, player in ipairs(Players:GetPlayers()) do
-            if player.Character then
-                for _, obj in ipairs(player.Character:GetDescendants()) do
+        for _, player in ipairs(BS.GetPlayers()) do
+            if BS.GetCharacter(player) then
+                for _, obj in ipairs(BS.GetCharacter(player):GetDescendants()) do
                     if obj.Name == "BS_Cham" then obj:Destroy() end
                 end
             end

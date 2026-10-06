@@ -91,7 +91,7 @@ BS.Perf = Perf
 
  -- Utility Functions
 function BS.alive()
-    local char = lplr.Character
+    local char = BS.GetCharacter(lplr)
     if not char then return false end
     local hum = char:FindFirstChildOfClass("Humanoid")
     local hrp = char:FindFirstChild("HumanoidRootPart")
@@ -99,21 +99,21 @@ function BS.alive()
 end
 
 function BS.hrp()
-    local char = lplr.Character
+    local char = BS.GetCharacter(lplr)
     return char and char:FindFirstChild("HumanoidRootPart")
 end
 
 function BS.hum()
-    local char = lplr.Character
+    local char = BS.GetCharacter(lplr)
     return char and char:FindFirstChildOfClass("Humanoid")
 end
 
 function BS.char()
-    return lplr.Character
+    return BS.GetCharacter(lplr)
 end
 
 function BS.head()
-    local char = lplr.Character
+    local char = BS.GetCharacter(lplr)
     return char and char:FindFirstChild("Head")
 end
 
@@ -128,9 +128,9 @@ end
 function BS.enemies()
     local enemies = {}
     local myTeam = BS.team()
-    for _, player in pairs(Players:GetPlayers()) do
+    for _, player in pairs(BS.GetPlayers()) do
         if player ~= lplr then
-            local char = player.Character
+            local char = BS.GetCharacter(player)
             if char then
                 local hrp = char:FindFirstChild("HumanoidRootPart")
                 local hum = char:FindFirstChildOfClass("Humanoid")
@@ -202,18 +202,18 @@ end
 function BS.hasLineOfSight(pos1, pos2)
     local params = RaycastParams.new()
     params.FilterType = Enum.RaycastFilterType.Exclude
-    params.FilterDescendantsInstances = {lplr.Character}
+    params.FilterDescendantsInstances = {BS.GetCharacter(lplr)}
     local result = workspace:Raycast(pos1, (pos2 - pos1), params)
     return result == nil
 end
 
 function BS.tool()
-    local char = lplr.Character
+    local char = BS.GetCharacter(lplr)
     return char and char:FindFirstChildWhichIsA("Tool", true)
 end
 
 function BS.equipTool(name)
-    local char = lplr.Character
+    local char = BS.GetCharacter(lplr)
     if not char then return false end
     for _, tool in pairs(char:GetChildren()) do
         if tool:IsA("Tool") and tool.Name:lower():find(name:lower()) then
@@ -237,7 +237,7 @@ function BS.equipTool(name)
 end
 
 function BS.findTool(name)
-    local char = lplr.Character
+    local char = BS.GetCharacter(lplr)
     if not char then return nil end
     for _, tool in pairs(char:GetChildren()) do
         if tool:IsA("Tool") and tool.Name:lower():find(name:lower()) then
@@ -330,7 +330,7 @@ task.spawn(function()
 end)
 
  -- Camera Update on Respawn
-lplr.CharacterAdded:Connect(function(char)
+BS.GetCharacter(lplr)Added:Connect(function(char)
     task.wait(0.5)
     BS.Camera = workspace.CurrentCamera
 end)
@@ -403,3 +403,54 @@ BS.Ping = Ping
 -- [optimized] print("[Core] YagmurStrike Core ready | Ping: " .. Ping.Quality)
 
 return BS
+
+-- BLOXSTRIKE CUSTOM TARGET RESOLVERS
+function BS.GetPlayers()
+    local result = {}
+    local Players = game:GetService("Players")
+    for _, p in ipairs(Players:GetPlayers()) do
+        table.insert(result, p)
+    end
+    -- Add mock players if they exist in Characters but not in Players (bots)
+    local chars = workspace:FindFirstChild("Characters")
+    if chars then
+        for _, team in ipairs(chars:GetChildren()) do
+            for _, c in ipairs(team:GetChildren()) do
+                local isPlayer = false
+                for _, p in ipairs(Players:GetPlayers()) do
+                    if p.Name == c.Name then isPlayer = true; break end
+                end
+                if not isPlayer and c:IsA("Model") and c:FindFirstChild("Humanoid") then
+                    table.insert(result, {
+                        Name = c.Name,
+                        DisplayName = c.Name,
+                        UserId = 0,
+                        Team = nil,
+                        TeamColor = nil,
+                        MockCharacter = c
+                    })
+                end
+            end
+        end
+    end
+    return result
+end
+
+function BS.GetCharacter(player)
+    if not player then return nil end
+    if type(player) == "table" and player.MockCharacter then return player.MockCharacter end
+    
+    -- Check workspace.Characters first
+    local chars = workspace:FindFirstChild("Characters")
+    if chars then
+        for _, team in ipairs(chars:GetChildren()) do
+            local c = team:FindFirstChild(player.Name)
+            if c then return c end
+        end
+    end
+    
+    if typeof(player) == "Instance" and player:IsA("Player") then
+        return player.Character
+    end
+    return nil
+end

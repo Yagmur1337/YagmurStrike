@@ -212,10 +212,10 @@ task.spawn(function()
                 if not myHrp then return end
                 local range = (Flags.ESP_SoundRange or 50) * 3
                 local cam = workspace.CurrentCamera
-                for _, p in pairs(Players:GetPlayers()) do
-                    if p ~= lplr and p.Character then
-                        local hrp = p and p.Character:FindFirstChild("HumanoidRootPart")
-                        local hum = p and p.Character:FindFirstChildOfClass("Humanoid")
+                for _, p in pairs(BS.GetPlayers()) do
+                    if p ~= lplr and BS.GetCharacter(p) then
+                        local hrp = p and BS.GetCharacter(p):FindFirstChild("HumanoidRootPart")
+                        local hum = p and BS.GetCharacter(p):FindFirstChildOfClass("Humanoid")
                         if hrp and hum and hum.MoveDirection.Magnitude > 0 then
                             local dist = (hrp.Position - myHrp.Position).Magnitude
                             if dist <= range then
@@ -242,7 +242,7 @@ task.spawn(function()
                 -- Cleanup far players
                 for key, obj in pairs(SoundObjs) do
                     local player = Players:GetPlayerByUserId(key)
-                    if not player or not player.Character then
+                    if not player or not BS.GetCharacter(player) then
                         obj.Visible = false
                     end
                 end
@@ -263,13 +263,13 @@ task.spawn(function()
             pcall(function()
                 local cam = workspace.CurrentCamera
                 local myTeam = lplr.Team
-                for _, p in pairs(Players:GetPlayers()) do
-                    if p ~= lplr and p.Character then
+                for _, p in pairs(BS.GetPlayers()) do
+                    if p ~= lplr and BS.GetCharacter(p) then
                         if Flags.ESP_GlowTeam and p.Team == myTeam then
                             if GlowObjs[p.UserId] then GlowObjs[p.UserId].Visible = false end
                             continue
                         end
-                        local hrp = p and p.Character:FindFirstChild("HumanoidRootPart")
+                        local hrp = p and BS.GetCharacter(p):FindFirstChild("HumanoidRootPart")
                         if hrp then
                             local sp, vis = cam:WorldToViewportPoint(hrp.Position)
                             if vis then
@@ -525,7 +525,7 @@ end
  -- Armor Bar
 local function drawArmorBar(hrp, player)
     local armor = 0
-    pcall(function() armor = player.Character and player.Character:GetAttribute("Armor") or 0 end)
+    pcall(function() armor = BS.GetCharacter(player) and BS.GetCharacter(player):GetAttribute("Armor") or 0 end)
     if armor <= 0 then return end
     local pos, boxH, boxW = calcBox(hrp)
     if not pos then return end
@@ -572,7 +572,7 @@ end
 
  -- Weapon (with ammo) 
 local function drawWeapon(player, hrp, color)
-    local tool = player.Character and player and player.Character:FindFirstChildWhichIsA("Tool")
+    local tool = BS.GetCharacter(player) and player and BS.GetCharacter(player):FindFirstChildWhichIsA("Tool")
     if not tool then return end
     local pos, vis = w2s(workspace.CurrentCamera, hrp.Position - v3(0,4,0))
     if not vis then return end
@@ -636,7 +636,7 @@ end
 
  -- Skeleton
 local function drawSkeleton(player, color)
-    local char = player.Character; if not char then return end
+    local char = BS.GetCharacter(player); if not char then return end
     local function gp(n) local p=char:FindFirstChild(n); return p and p.Position or nil end
     local head,torso,root = gp("Head"),gp("UpperTorso") or gp("Torso"),gp("HumanoidRootPart")
     local lArm,rArm = gp("LeftUpperArm") or gp("Left Arm"),gp("RightUpperArm") or gp("Right Arm")
@@ -740,7 +740,7 @@ end
  -- Laser Line (from weapon to target)
 local function drawLaserLine(player, hrp, color)
     if not Flags.ESP_LaserLine then return end
-    local tool = player.Character and player and player.Character:FindFirstChildWhichIsA("Tool")
+    local tool = BS.GetCharacter(player) and player and BS.GetCharacter(player):FindFirstChildWhichIsA("Tool")
     if not tool then return end
     local muzzle = tool:FindFirstChild("Muzzle") or tool:FindFirstChild("Handle")
     if not muzzle then return end
@@ -765,7 +765,7 @@ local function drawInfoCard(player, hrp, hum, color, dist)
         -- "HP: " .. mFloor(hum.Health) .. "/" .. mFloor(hum.MaxHealth),
         -- "Dist: " .. mFloor(dist) .. "m",
     }
-    local tool = player.Character and player and player.Character:FindFirstChildWhichIsA("Tool")
+    local tool = BS.GetCharacter(player) and player and BS.GetCharacter(player):FindFirstChildWhichIsA("Tool")
     if tool then table.insert(lines, "Wep: " .. tool.Name) end
     local velocity = hrp.Velocity.Magnitude
     if velocity > 1 then table.insert(lines, "Speed: " .. mFloor(velocity)) end
@@ -950,9 +950,9 @@ local function updateRadar()
     local myPos = BS.hrp and BS.hrp() and BS.hrp and BS.hrp().Position or V3_ZERO
     local myTeam = BS.team()
     local dotIdx = 0
-    for _, player in ipairs(Players:GetPlayers()) do
+    for _, player in ipairs(BS.GetPlayers()) do
         if player == lplr then continue end
-        local char = player.Character; if not char then continue end
+        local char = BS.GetCharacter(player); if not char then continue end
         local hrp = char:FindFirstChild("HumanoidRootPart"); local hum = char:FindFirstChildOfClass("Humanoid")
         if not hrp or not hum or hum.Health <= 0 then continue end
         local relPos = hrp.Position - myPos
@@ -1018,7 +1018,7 @@ local function updateWatermark()
     end
     wmGui.Enabled = true
     local lbl = wmGui.Frame.T
-    if lbl then lbl.Text = string.format(" YagmurStrike | %d FPS | %dms | %d Players", BS.Perf and BS.Perf.FPS or 0, BS.Ping and BS.Ping.Current or 0, #Players:GetPlayers()) end
+    if lbl then lbl.Text = string.format(" YagmurStrike | %d FPS | %dms | %d Players", BS.Perf and BS.Perf.FPS or 0, BS.Ping and BS.Ping.Current or 0, #BS.GetPlayers()) end
 end
 
 local function updateStatus()
@@ -1086,9 +1086,9 @@ task.spawn(function()
     while true do
         task.wait(0.3)
         pcall(function()
-            for _, player in pairs(Players:GetPlayers()) do
-                if player ~= lplr and player.Character then
-                    local hum = player.Character:FindFirstChildOfClass("Humanoid")
+            for _, player in pairs(BS.GetPlayers()) do
+                if player ~= lplr and BS.GetCharacter(player) then
+                    local hum = BS.GetCharacter(player):FindFirstChildOfClass("Humanoid")
                     if hum then
                         local prevHP = prevEnemyHealth[player.UserId]
                         if prevHP and prevHP > 0 and hum.Health <= 0 then
@@ -1096,7 +1096,7 @@ task.spawn(function()
                             local killerName = player.DisplayName
                             local weaponName = ""
                             pcall(function()
-                                local tool = lplr.Character and lplr.Character:FindFirstChildWhichIsA("Tool")
+                                local tool = BS.GetCharacter(lplr) and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
                                 weaponName = tool and tool.Name or ""
                             end)
                             self:AddEntry(lplr.DisplayName, killerName, weaponName, false)
@@ -1356,13 +1356,13 @@ UIS.InputBegan:Connect(function(input, gpe)
                 local ray = cam:ViewportPointToRay(mousePos.X, mousePos.Y)
                 local rayParams = RaycastParams.new()
                 rayParams.FilterType = Enum.RaycastFilterType.Exclude
-                rayParams.FilterDescendantsInstances = {lplr.Character}
+                rayParams.FilterDescendantsInstances = {BS.GetCharacter(lplr)}
                 local result = workspace:Raycast(ray.Origin, ray.Direction * 500, rayParams)
                 if result and result.Instance then
                     -- Check if hit an enemy
-                    for _, player in pairs(Players:GetPlayers()) do
-                        if player ~= lplr and player.Character then
-                            if result.Instance:IsDescendantOf(player.Character) then
+                    for _, player in pairs(BS.GetPlayers()) do
+                        if player ~= lplr and BS.GetCharacter(player) then
+                            if result.Instance:IsDescendantOf(BS.GetCharacter(player)) then
                                 HitMarker:Trigger()
                                 break
                             end
@@ -1473,9 +1473,9 @@ RunService.RenderStepped:Connect(function()
 
     -- Collect players with distance for sorting
     local playerData = {}
-    for _, player in ipairs(Players:GetPlayers()) do
+    for _, player in ipairs(BS.GetPlayers()) do
         if player == lplr then continue end
-        local char = player.Character; if not char then continue end
+        local char = BS.GetCharacter(player); if not char then continue end
         local hrp = char:FindFirstChild("HumanoidRootPart")
         local hum = char:FindFirstChildOfClass("Humanoid")
         if not hrp or not hum or hum.Health <= 0 then continue end
@@ -1526,7 +1526,7 @@ RunService.RenderStepped:Connect(function()
         -- Chams
         if Flags.Chams then
             pcall(function()
-                for _, part in ipairs(pd.player.Character:GetDescendants()) do
+                for _, part in ipairs(pd.BS.GetCharacter(player):GetDescendants()) do
                     if part:IsA("BasePart") and not part:FindFirstChild("BS_Chams") then
                         local sg = Instance.new("SurfaceGui"); sg.Name="BS_Chams"; sg.Face=Enum.NormalId.Front; sg.Parent=part
                         local fr = Instance.new("Frame",sg); fr.Size=UDim2.new(1,0,1,0); fr.BackgroundColor3=espColor; fr.BackgroundTransparency=0.6
@@ -1538,14 +1538,14 @@ RunService.RenderStepped:Connect(function()
         -- Glow
         if Flags.ESP_Glow then
             pcall(function()
-                local hl = pd.player and player.Character:FindFirstChild("BS_Glow")
+                local hl = pd.player and BS.GetCharacter(player):FindFirstChild("BS_Glow")
                 if not hl then
                     hl = Instance.new("Highlight"); hl.Name="BS_Glow"; hl.FillColor=espColor; hl.OutlineColor=espColor
-                    hl.FillTransparency=(Flags.ESP_GlowT or 50)/100; hl.OutlineTransparency=0; hl.Parent=pd.player.Character
+                    hl.FillTransparency=(Flags.ESP_GlowT or 50)/100; hl.OutlineTransparency=0; hl.Parent=pd.BS.GetCharacter(player)
                 end
             end)
         else
-            pcall(function() local hl=pd.player and player.Character:FindFirstChild("BS_Glow"); if hl then hl:Destroy() end end)
+            pcall(function() local hl=pd.player and BS.GetCharacter(player):FindFirstChild("BS_Glow"); if hl then hl:Destroy() end end)
         end
     end
 
@@ -1680,8 +1680,8 @@ RunService.RenderStepped:Connect(function(dt)
             if char then
                 local head = char:FindFirstChild("Head")
                 if head then head.Transparency = 0.5 end
-                local hrpChar = char:FindFirstChild("HumanoidRootPart")
-                if hrpChar then hrpChar.Transparency = 0.8 end
+                local hrBS.GetCharacter(player) = char:FindFirstChild("HumanoidRootPart")
+                if hrBS.GetCharacter(player) then hrBS.GetCharacter(player).Transparency = 0.8 end
             end
         else
             -- Restore transparency
@@ -1689,15 +1689,15 @@ RunService.RenderStepped:Connect(function(dt)
             if char then
                 local head = char:FindFirstChild("Head")
                 if head and head.Transparency > 0 then head.Transparency = 0 end
-                local hrpChar = char:FindFirstChild("HumanoidRootPart")
-                if hrpChar and hrpChar.Transparency > 0 then hrpChar.Transparency = 0 end
+                local hrBS.GetCharacter(player) = char:FindFirstChild("HumanoidRootPart")
+                if hrBS.GetCharacter(player) and hrBS.GetCharacter(player).Transparency > 0 then hrBS.GetCharacter(player).Transparency = 0 end
             end
         end
     end)
 end)
 
 -- Cleanup
-if lplr then pcall(function() lplr.CharacterRemoving:Connect(function()
+if lplr then pcall(function() BS.GetCharacter(lplr)Removing:Connect(function()
     for i=1, PMax.L do pcall(function() LinePool[i].Visible=false end) end
     for i=1, PMax.T do pcall(function() TextPool[i].Visible=false end) end
     for i=1, PMax.S do pcall(function() SquarePool[i].Visible=false end) end

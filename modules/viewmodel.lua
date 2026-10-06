@@ -145,9 +145,9 @@ task.spawn(function()
                 or Flags.VMBob or Flags.VMSway or Flags.VMBreathe or Flags.VMRecoil
 
             if not anyEnabled then return end
-            if not lplr.Character then return end
+            if not BS.GetCharacter(lplr) then return end
 
-            local tool = lplr and lplr.Character:FindFirstChildWhichIsA("Tool")
+            local tool = lplr and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
             if not tool then return end
 
             local handle = tool:FindFirstChild("Handle")
@@ -184,7 +184,7 @@ task.spawn(function()
 
              -- Walking Bob
             local speed = 0
-            local hrp = lplr and lplr.Character:FindFirstChild("HumanoidRootPart")
+            local hrp = lplr and BS.GetCharacter(lplr):FindFirstChild("HumanoidRootPart")
             if hrp then
                 speed = hrp.AssemblyLinearVelocity.Magnitude
             end
@@ -260,8 +260,8 @@ task.spawn(function()
     while true do
         task.wait(0.1)
         pcall(function()
-            if Flags.VMRecoil and lplr.Character then
-                local tool = lplr and lplr.Character:FindFirstChildWhichIsA("Tool")
+            if Flags.VMRecoil and BS.GetCharacter(lplr) then
+                local tool = lplr and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
                 if tool then
                     -- Simple recoil on tool activation
                     local conn
@@ -282,7 +282,7 @@ task.spawn(function()
 end)
 
  -- Cleanup
-lplr.CharacterRemoving:Connect(function()
+BS.GetCharacter(lplr)Removing:Connect(function()
     pcall(function()
         local cam = workspace.CurrentCamera
         if cam then

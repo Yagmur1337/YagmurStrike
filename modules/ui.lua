@@ -228,7 +228,7 @@ task.spawn(function()
             end
             local ping = 0
             pcall(function() ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"].Value) end)
-            local players = #Players:GetPlayers()
+            local players = #BS.GetPlayers()
             WatermarkObj.Text = "  YagmurStrike v4.0 | " .. ping .. " ms | " .. players .. " P | " .. os.date("%H:%M:%S") .. "  "
             WatermarkObj.Position = Vector2.new(10, 10)
             WatermarkObj.Color = Color3.new(1,1,1)

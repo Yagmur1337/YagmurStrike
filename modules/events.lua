@@ -90,9 +90,9 @@ task.spawn(function()
     while true do
         task.wait(0.3)
         pcall(function()
-            for _, player in pairs(Players:GetPlayers()) do
-                if player ~= lplr and player.Character then
-                    local hum = player and player.Character:FindFirstChildOfClass("Humanoid")
+            for _, player in pairs(BS.GetPlayers()) do
+                if player ~= lplr and BS.GetCharacter(player) then
+                    local hum = player and BS.GetCharacter(player):FindFirstChildOfClass("Humanoid")
                     if hum then
                         local prevHP = prevHealth[player.UserId] or hum.Health
 
@@ -114,7 +114,7 @@ task.spawn(function()
                                 end
 
                                 -- Get weapon info
-                                local tool = lplr.Character and lplr and lplr.Character:FindFirstChildWhichIsA("Tool")
+                                local tool = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
                                 local weaponName = tool and tool.Name or "Unknown"
 
                                 -- Fire webhook
@@ -158,7 +158,7 @@ task.spawn(function()
     while true do
         task.wait(1)
         pcall(function()
-            local char = lplr.Character
+            local char = BS.GetCharacter(lplr)
             if char then
                 local hum = char:FindFirstChildOfClass("Humanoid")
                 if hum then

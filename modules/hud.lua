@@ -67,14 +67,14 @@ local function updateSpectators()
         SpectatorObjs = {}
         return
     end
-    local myChar = lplr.Character
+    local myChar = BS.GetCharacter(lplr)
     if not myChar then return end
     local myHead = myChar:FindFirstChild("Head")
     if not myHead then return end
     local specs = {}
-    for _, p in pairs(Players:GetPlayers()) do
-        if p ~= lplr and p.Character then
-            local cam = p and p.Character:FindFirstChildOfClass("Camera")
+    for _, p in pairs(BS.GetPlayers()) do
+        if p ~= lplr and BS.GetCharacter(p) then
+            local cam = p and BS.GetCharacter(p):FindFirstChildOfClass("Camera")
             if cam and cam.CameraSubject == myHead then
                 table.insert(specs, p.Name)
             end
@@ -139,9 +139,9 @@ local function updateKillCounter()
 end
 
 -- Listen for kills/deaths
-lplr.CharacterAdded:Connect(function()
+BS.GetCharacter(lplr)Added:Connect(function()
     task.delay(0.5, function()
-        local hum = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Humanoid")
+        local hum = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildOfClass("Humanoid")
         if hum then
             hum.Died:Connect(function()
                 SessionDeaths = SessionDeaths + 1
@@ -400,7 +400,7 @@ RunService.RenderStepped:Connect(function()
 
     if Flags.HUDPlayerCount then
         local pcObj = getHUDObject("playercount")
-        pcObj.Text = "Players: " .. #Players:GetPlayers() .. "/" .. Players.MaxPlayers
+        pcObj.Text = "Players: " .. #BS.GetPlayers() .. "/" .. Players.MaxPlayers
         pcObj.Size = size
         pcObj.Position = getHUDPosition(0, line)
         pcObj.Color = C_CYAN
@@ -669,7 +669,7 @@ task.spawn(function()
 end)
 
  -- Session Reset on Respawn
-lplr.CharacterAdded:Connect(function()
+BS.GetCharacter(lplr)Added:Connect(function()
     -- Don't reset stats on respawn
 end)
 

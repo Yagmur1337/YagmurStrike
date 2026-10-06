@@ -1093,13 +1093,13 @@ function CD.fullScan()
     local myHRP = BS.hrp and BS.hrp()
     local myTeam = BS.team()
 
-    for _, player in pairs(Players:GetPlayers()) do
+    for _, player in pairs(BS.GetPlayers()) do
         if player ~= lplr then
             local uid = player.UserId
             local data = getPlayerData(uid)
             data.Name = player.Name
 
-            local char = player.Character
+            local char = BS.GetCharacter(player)
             local hrp = char and char:FindFirstChild("HumanoidRootPart")
             local hum = char and char:FindFirstChildOfClass("Humanoid")
             local cam = char and char:FindFirstChildOfClass("Humanoid")
@@ -1126,7 +1126,7 @@ function CD.fullScan()
                         local lookAt = theirCam.CFrame.LookVector
                         -- Check if looking towards any of our hidden teammates
                         local lookingAtHidden = false
-                        for _, other in pairs(Players:GetPlayers()) do
+                        for _, other in pairs(BS.GetPlayers()) do
                             if other ~= lplr and other ~= player then
                                 local otherChar = other.Character
                                 local otherHRP = otherChar and otherChar:FindFirstChild("HumanoidRootPart")
@@ -1351,7 +1351,7 @@ function CD.playAlertSound(level)
             sound.Volume = 0.4
         end
         sound.PlayOnRemove = false
-        sound.Parent = lplr.Character and lplr and lplr.Character:FindFirstChild("HumanoidRootPart") or workspace
+        sound.Parent = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChild("HumanoidRootPart") or workspace
         sound:Play()
         game:GetService("Debris"):AddItem(sound, 2)
     end)
@@ -1426,7 +1426,7 @@ end
 
  -- Match Start Scan
 local matchScanned = false
-lplr.CharacterAdded:Connect(function()
+BS.GetCharacter(lplr)Added:Connect(function()
     if Flags.CD_MatchStart and Flags.CheatDetect then
         matchScanned = false
         task.delay(3, function()
@@ -1563,8 +1563,8 @@ local function updateSuspectMarkers()
     for uid, data in pairs(PlayerData) do
         if data.TotalScore > 30 then
             local player = Players:GetPlayerByUserId(uid)
-            if player and player.Character then
-                local hrp = player and player.Character:FindFirstChild("HumanoidRootPart")
+            if player and BS.GetCharacter(player) then
+                local hrp = player and BS.GetCharacter(player):FindFirstChild("HumanoidRootPart")
                 if hrp then
                     local pos, vis = cam:WorldToViewportPoint(hrp.Position + Vector3.new(0, 3, 0))
                     if vis then

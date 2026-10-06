@@ -159,7 +159,7 @@ local function playSound(soundData, pitch)
         s.SoundId = soundData.ID
         s.Volume = soundData.Vol or 0.5
         s.PlaybackSpeed = pitch or 1.0
-        s.Parent = lplr.Character and lplr and lplr.Character:FindFirstChild("HumanoidRootPart") or workspace
+        s.Parent = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChild("HumanoidRootPart") or workspace
         s:Play()
         game:GetService("Debris"):AddItem(s, 2)
     end)
@@ -970,9 +970,9 @@ task.spawn(function()
     while true do
         task.wait(0.15)
         pcall(function()
-            for _, player in pairs(Players:GetPlayers()) do
-                if player ~= lplr and player.Character then
-                    local hum = player and player.Character:FindFirstChildOfClass("Humanoid")
+            for _, player in pairs(BS.GetPlayers()) do
+                if player ~= lplr and BS.GetCharacter(player) then
+                    local hum = player and BS.GetCharacter(player):FindFirstChildOfClass("Humanoid")
                     if hum then
                         local prevHP = prevHealth[player.UserId] or hum.Health
                         if prevHP > 0 and hum.Health <= 0 then
@@ -980,14 +980,14 @@ task.spawn(function()
                             if isEnemy then
                                 local weaponName = "Unknown"
                                 pcall(function()
-                                    local tool = lplr.Character and lplr and lplr.Character:FindFirstChildWhichIsA("Tool")
+                                    local tool = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
                                     if tool then weaponName = tool.Name end
                                 end)
 
                                 -- Headshot detection
                                 local isHeadshot = false
                                 pcall(function()
-                                    local head = player and player.Character:FindFirstChild("Head")
+                                    local head = player and BS.GetCharacter(player):FindFirstChild("Head")
                                     if head and head:GetAttribute("LastDamage") then isHeadshot = true end
                                 end)
 
@@ -1008,7 +1008,7 @@ task.spawn(function()
     while true do
         task.wait(1)
         pcall(function()
-            local char = lplr.Character
+            local char = BS.GetCharacter(lplr)
             if char then
                 local hum = char:FindFirstChildOfClass("Humanoid")
                 if hum and not hum:GetAttribute("BS_KillSndConn") then
@@ -1021,7 +1021,7 @@ task.spawn(function()
 end)
 
  -- Cleanup
-lplr.CharacterRemoving:Connect(function()
+BS.GetCharacter(lplr)Removing:Connect(function()
     if killEffectGui then killEffectGui:ClearAllChildren() end
     if vignetteGui then vignetteGui:ClearAllChildren() end
     pcall(function()

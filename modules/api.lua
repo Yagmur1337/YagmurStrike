@@ -85,28 +85,28 @@ end
 -- PLAYER STATE
 
 function api.isAlive()
-    local c = lplr.Character
+    local c = BS.GetCharacter(lplr)
     return c and c:FindFirstChild("HumanoidRootPart") and c:FindFirstChildOfClass("Humanoid")
         and c:FindFirstChildOfClass("Humanoid").Health > 0
 end
 
 function api.getHealth()
-    local h = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Humanoid")
+    local h = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildOfClass("Humanoid")
     return h and h.Health or 0
 end
 
 function api.getMaxHealth()
-    local h = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Humanoid")
+    local h = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildOfClass("Humanoid")
     return h and h.MaxHealth or 100
 end
 
 function api.getHRP()
-    local c = lplr.Character
+    local c = BS.GetCharacter(lplr)
     return c and c:FindFirstChild("HumanoidRootPart")
 end
 
 function api.getHumanoid()
-    local c = lplr.Character
+    local c = BS.GetCharacter(lplr)
     return c and c:FindFirstChildOfClass("Humanoid")
 end
 
@@ -118,13 +118,13 @@ end
 
 function api.getEnemies()
     local t = {}
-    for _, p in pairs(Players:GetPlayers()) do
-        if p ~= lplr and p.Character then
-            local h = p and p.Character:FindFirstChild("HumanoidRootPart")
-            local hu = p and p.Character:FindFirstChildOfClass("Humanoid")
-            local head = p and p.Character:FindFirstChild("Head")
+    for _, p in pairs(BS.GetPlayers()) do
+        if p ~= lplr and BS.GetCharacter(p) then
+            local h = p and BS.GetCharacter(p):FindFirstChild("HumanoidRootPart")
+            local hu = p and BS.GetCharacter(p):FindFirstChildOfClass("Humanoid")
+            local head = p and BS.GetCharacter(p):FindFirstChild("Head")
             if h and hu and hu.Health > 0 then
-                table.insert(t, {Player = p, HRP = h, Char = p.Character, Hum = hu, Head = head})
+                table.insert(t, {Player = p, HRP = h, Char = BS.GetCharacter(p), Hum = hu, Head = head})
             end
         end
     end
@@ -212,7 +212,7 @@ function api.getBombTimer()
 end
 
 function api.hasBomb()
-    local char = lplr.Character
+    local char = BS.GetCharacter(lplr)
     if char then
         for _, tool in pairs(char:GetChildren()) do
             if tool:IsA("Tool") and (tool.Name:lower():find("c4") or tool.Name:lower():find("bomb")) then
@@ -226,7 +226,7 @@ end
 -- DEFUSE KIT
 
 function api.hasDefuseKit()
-    local char = lplr.Character
+    local char = BS.GetCharacter(lplr)
     if char then
         for _, tool in pairs(char:GetChildren()) do
             if tool:IsA("Tool") and (tool.Name:lower():find("defuse") or tool.Name:lower():find("kit")) then
@@ -241,7 +241,7 @@ end
 
 function api.getGrenades()
     local grenades = {}
-    local char = lplr.Character
+    local char = BS.GetCharacter(lplr)
     local bp = lplr:FindFirstChild("Backpack")
     local function scan(container)
         if not container then return end
@@ -262,7 +262,7 @@ function api.getGrenades()
 end
 
 function api.throwGrenade(grenadeName)
-    local char = lplr.Character
+    local char = BS.GetCharacter(lplr)
     if not char then return end
     for _, tool in pairs(char:GetChildren()) do
         if tool:IsA("Tool") and tool.Name:lower():find(grenadeName:lower()) then

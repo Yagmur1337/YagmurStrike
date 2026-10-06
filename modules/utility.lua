@@ -229,7 +229,7 @@ task.spawn(function()
             elseif mode == "Edge Bug" then
                 local params = RaycastParams.new()
                 params.FilterType = Enum.RaycastFilterType.Exclude
-                params.FilterDescendantsInstances = {lplr.Character}
+                params.FilterDescendantsInstances = {BS.GetCharacter(lplr)}
                 local lookVec = hrp.CFrame.LookVector
                 -- Check for edge ahead
                 local result = workspace:Raycast(hrp.Position, lookVec * 4 + Vector3.new(0, -6, 0), params)
@@ -383,7 +383,7 @@ task.spawn(function()
             if Flags.BhopEB and mode ~= "Edge Bug" then
                 local params = RaycastParams.new()
                 params.FilterType = Enum.RaycastFilterType.Exclude
-                params.FilterDescendantsInstances = {lplr.Character}
+                params.FilterDescendantsInstances = {BS.GetCharacter(lplr)}
                 local lookVec = hrp.CFrame.LookVector
                 local result = workspace:Raycast(hrp.Position, lookVec * 3 + Vector3.new(0, -5, 0), params)
                 if not result and not onGround then
@@ -564,10 +564,10 @@ task.spawn(function()
                 end
                 playerCountGui.Enabled = true
                 local alive, total = 0, 0
-                for _, p in ipairs(Players:GetPlayers()) do
+                for _, p in ipairs(BS.GetPlayers()) do
                     total = total + 1
-                    if p.Character then
-                        local hum = p and p.Character:FindFirstChildOfClass("Humanoid")
+                    if BS.GetCharacter(p) then
+                        local hum = p and BS.GetCharacter(p):FindFirstChildOfClass("Humanoid")
                         if hum and hum.Health > 0 then alive = alive + 1 end
                     end
                 end
@@ -737,9 +737,9 @@ task.spawn(function()
     while task.wait(5) do
         if Flags.AutoReconnect then
             pcall(function()
-                if not lplr.Character then
+                if not BS.GetCharacter(lplr) then
                     task.wait(10)
-                    if not lplr.Character then
+                    if not BS.GetCharacter(lplr) then
                         game:GetService("TeleportService"):Teleport(game.PlaceId, lplr)
                     end
                 end
@@ -751,7 +751,7 @@ end)
 -- NOTE: Settings/Presets are in the Settings tab -- avoid duplication
 
  -- Cleanup
-lplr.CharacterRemoving:Connect(function()
+BS.GetCharacter(lplr)Removing:Connect(function()
     if bombTimerGui then bombTimerGui.Enabled = false end
     if bhopHudGui then bhopHudGui.Enabled = false end
     if playerCountGui then playerCountGui.Enabled = false end
@@ -836,7 +836,7 @@ BS.QuickNade = function()
         for _, tool in ipairs(backpack:GetChildren()) do
             if tool:IsA("Tool") and (tool.Name:lower():find("grenade") or tool.Name:lower():find("flash") or tool.Name:lower():find("smoke") or tool.Name:lower():find("molotov")) then
                 -- Equip
-                tool.Parent = lplr.Character or lplr
+                tool.Parent = BS.GetCharacter(lplr) or lplr
                 -- Throw after short delay
                 task.delay(0.1, function()
                     pcall(function()

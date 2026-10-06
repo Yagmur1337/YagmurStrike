@@ -121,7 +121,7 @@ local function fireWeapon()
 
     -- Method 1: tool:Activate() — standard Roblox tool firing
     pcall(function()
-        local tool = lplr.Character and lplr.Character:FindFirstChildWhichIsA("Tool")
+        local tool = BS.GetCharacter(lplr) and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
         if tool then
             -- Check if tool has a RemoteEvent for firing
             local fireRemote = tool:FindFirstChild("FireRemote")
@@ -176,7 +176,7 @@ local function fireWeapon()
     -- Method 3: firesignal / fireclickdetector for specific tool types
     if not success then
         pcall(function()
-            local tool = lplr.Character and lplr.Character:FindFirstChildWhichIsA("Tool")
+            local tool = BS.GetCharacter(lplr) and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
             if tool then
                 local handle = tool:FindFirstChild("Handle")
                 if handle then
@@ -278,7 +278,7 @@ function WallbangEngine.measureWall(origin, direction, maxDist)
 
     local params = RaycastParams.new()
     params.FilterType = Enum.RaycastFilterType.Exclude
-    params.FilterDescendantsInstances = {lplr.Character}
+    params.FilterDescendantsInstances = {BS.GetCharacter(lplr)}
 
     local totalThickness = 0
     local wallCount = 0
@@ -293,7 +293,7 @@ function WallbangEngine.measureWall(origin, direction, maxDist)
 
         -- Skip non-wall parts (players, tools, etc.)
         local inst = result.Instance
-        if inst:IsA("BasePart") and not inst:IsDescendantOf(lplr.Character) then
+        if inst:IsA("BasePart") and not inst:IsDescendantOf(BS.GetCharacter(lplr)) then
             local thickness = (result.Position - currentOrigin).Magnitude
             totalThickness = totalThickness + thickness
             wallCount = wallCount + 1
@@ -605,7 +605,7 @@ task.spawn(function()
                     end
                     -- Auto Scope
                     if Flags.AimAutoScope then
-                        local t = lplr.Character and lplr and lplr.Character:FindFirstChildWhichIsA("Tool")
+                        local t = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
                         if t and (t.Name:lower():find("awp") or t.Name:lower():find("sniper")) then
                             safeMouse1Click()
                         end
@@ -807,7 +807,7 @@ task.spawn(function()
                 local ray = cam:ViewportPointToRay(mousePos.X, mousePos.Y)
                 local rayParams = RaycastParams.new()
                 rayParams.FilterType = Enum.RaycastFilterType.Exclude
-                rayParams.FilterDescendantsInstances = {lplr.Character}
+                rayParams.FilterDescendantsInstances = {BS.GetCharacter(lplr)}
                 local rayResult = workspace:Raycast(ray.Origin, ray.Direction * 500, rayParams)
                 local mouseTarget = rayResult and rayResult.Instance
                 if not cam or not mouseTarget or not myHrp then return end
@@ -848,7 +848,7 @@ task.spawn(function()
                         task.wait(delay)
 
                         -- Fire using the new fire simulation system
-                        local tool = lplr.Character and lplr and lplr.Character:FindFirstChildWhichIsA("Tool")
+                        local tool = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
                         if tool and not tool.Name:lower():find("knife") then
                             if Flags.TBBurst then
                                 -- Burst fire mode
@@ -1038,7 +1038,7 @@ task.spawn(function()
         task.wait()
         if Flags.AutoFire and BS.alive and BS.alive() then
             pcall(function()
-                local tool = lplr.Character and lplr.Character:FindFirstChildWhichIsA("Tool")
+                local tool = BS.GetCharacter(lplr) and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
                 if tool and not tool.Name:lower():find("knife") then
                     -- Only fire when mouse1 is held down
                     local mouse1Held = false
@@ -1062,7 +1062,7 @@ UIS.InputBegan:Connect(function(input, gpe)
     if gpe then return end
     if Flags.QuickSwitch and input.KeyCode == Enum.KeyCode.Q then
         pcall(function()
-            local tool = lplr.Character and lplr and lplr.Character:FindFirstChildWhichIsA("Tool")
+            local tool = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
             if tool then
                 local name = tool.Name:lower()
                 if name:find("knife") or name:find("bayonet") then
@@ -1158,13 +1158,13 @@ task.spawn(function()
                 local target, dist = BS.nearestEnemy(Flags.KnifeRange or 4)
                 if target and dist <= (Flags.KnifeRange or 4) then
                     -- Switch to knife
-                    local currentTool = lplr.Character and lplr and lplr.Character:FindFirstChildWhichIsA("Tool")
+                    local currentTool = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
                     if not currentTool or not currentTool.Name:lower():find("knife") then
                         pcall(function() BS.equipTool("knife") end)
                         task.wait(0.1)
                     end
                     -- Attack
-                    local tool = lplr.Character and lplr and lplr.Character:FindFirstChildWhichIsA("Tool")
+                    local tool = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
                     if tool then tool:Activate() end
                 end
             end)
@@ -1369,7 +1369,7 @@ task.spawn(function()
         task.wait(0.01)
         if Flags.AutoPistol and BS.alive and BS.alive() then
             pcall(function()
-                local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
+                local tool = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildOfClass("Tool")
                 if tool and tool:FindFirstChild("RemoteEvent") then
                     local rpm = Flags.AutoPistolRPM or 400
                     local interval = 60 / rpm
@@ -1394,7 +1394,7 @@ task.spawn(function()
         task.wait(0.01)
         if Flags.RapidFire and BS.alive and BS.alive() then
             pcall(function()
-                local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
+                local tool = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildOfClass("Tool")
                 if tool and tool:FindFirstChild("RemoteEvent") then
                     local burst = Flags.RapidBurst or 3
                     local delay = (Flags.RapidDelay or 30) / 1000
@@ -1444,21 +1444,21 @@ task.spawn(function()
         task.wait(0.01)
         if (Flags.KnifeAfterShot or Flags.AutoReloadEmpty) and BS.alive and BS.alive() then
             pcall(function()
-                local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
+                local tool = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildOfClass("Tool")
                 if tool and tool:FindFirstChild("RemoteEvent") then
                     if UIS:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
                         lastShotTime = tick()
                     end
                     -- Quick switch after shot
                     if Flags.KnifeAfterShot and tick() - lastShotTime > 0 and tick() - lastShotTime < 0.1 then
-                        local knife = lplr and lplr.Character:FindFirstChild("Knife") or lplr.Backpack:FindFirstChild("Knife")
+                        local knife = lplr and BS.GetCharacter(lplr):FindFirstChild("Knife") or lplr.Backpack:FindFirstChild("Knife")
                         if knife then
                             tool.Parent = lplr.Backpack
-                            knife.Parent = lplr.Character
+                            knife.Parent = BS.GetCharacter(lplr)
                             task.delay((Flags.QSDelay or 150) / 1000, function()
-                                if knife.Parent == lplr.Character then
+                                if knife.Parent == BS.GetCharacter(lplr) then
                                     knife.Parent = lplr.Backpack
-                                    tool.Parent = lplr.Character
+                                    tool.Parent = BS.GetCharacter(lplr)
                                 end
                             end)
                         end
@@ -1482,7 +1482,7 @@ task.spawn(function()
         if Flags.AutoScope and BS.alive and BS.alive() then
             pcall(function()
                 if not UIS:IsKeyDown(Enum.KeyCode.LeftShift) then
-                    local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
+                    local tool = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildOfClass("Tool")
                     if tool and (tool.Name:lower():find("awp") or tool.Name:lower():find("sniper")) then
                         -- Auto scope when aimbot target exists
                         if Flags.Aimbot and Flags.AimTarget then
@@ -1504,18 +1504,18 @@ task.spawn(function()
                 local myHrp = BS.hrp and BS.hrp()
                 if not myHrp then return end
                 local range = Flags.KnifeRange or 10
-                for _, p in pairs(Players:GetPlayers()) do
-                    if p ~= lplr and p.Character then
-                        local eHrp = p and p.Character:FindFirstChild("HumanoidRootPart")
-                        local eHum = p and p.Character:FindFirstChildOfClass("Humanoid")
+                for _, p in pairs(BS.GetPlayers()) do
+                    if p ~= lplr and BS.GetCharacter(p) then
+                        local eHrp = p and BS.GetCharacter(p):FindFirstChild("HumanoidRootPart")
+                        local eHum = p and BS.GetCharacter(p):FindFirstChildOfClass("Humanoid")
                         if eHrp and eHum and eHum.Health > 0 then
                             local dist = (eHrp.Position - myHrp.Position).Magnitude
                             if dist <= range then
                                 -- Equip knife and attack
-                                local knife = lplr.Backpack:FindFirstChild("Knife") or lplr and lplr.Character:FindFirstChild("Knife")
+                                local knife = lplr.Backpack:FindFirstChild("Knife") or lplr and BS.GetCharacter(lplr):FindFirstChild("Knife")
                                 if knife then
-                                    if knife.Parent ~= lplr.Character then
-                                        knife.Parent = lplr.Character
+                                    if knife.Parent ~= BS.GetCharacter(lplr) then
+                                        knife.Parent = BS.GetCharacter(lplr)
                                     end
                                     -- Trigger attack
                                     pcall(function()
@@ -1540,17 +1540,17 @@ task.spawn(function()
                 local myHrp = BS.hrp and BS.hrp()
                 if not myHrp then return end
                 local range = Flags.ZeusRange or 30
-                for _, p in pairs(Players:GetPlayers()) do
-                    if p ~= lplr and p.Character then
-                        local eHrp = p and p.Character:FindFirstChild("HumanoidRootPart")
-                        local eHum = p and p.Character:FindFirstChildOfClass("Humanoid")
+                for _, p in pairs(BS.GetPlayers()) do
+                    if p ~= lplr and BS.GetCharacter(p) then
+                        local eHrp = p and BS.GetCharacter(p):FindFirstChild("HumanoidRootPart")
+                        local eHum = p and BS.GetCharacter(p):FindFirstChildOfClass("Humanoid")
                         if eHrp and eHum and eHum.Health > 0 then
                             local dist = (eHrp.Position - myHrp.Position).Magnitude
                             if dist <= range then
-                                local zeus = lplr.Backpack:FindFirstChild("Taser") or lplr and lplr.Character:FindFirstChild("Taser")
+                                local zeus = lplr.Backpack:FindFirstChild("Taser") or lplr and BS.GetCharacter(lplr):FindFirstChild("Taser")
                                 if zeus then
-                                    if zeus.Parent ~= lplr.Character then
-                                        zeus.Parent = lplr.Character
+                                    if zeus.Parent ~= BS.GetCharacter(lplr) then
+                                        zeus.Parent = BS.GetCharacter(lplr)
                                     end
                                     pcall(function()
                                         zeus.RemoteEvent:FireServer(eHrp.Position)
@@ -1572,7 +1572,7 @@ task.spawn(function()
         if Flags.AutoKnifeAfterKill and BS.alive and BS.alive() then
             pcall(function()
                 -- Switch to knife after getting a kill
-                local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
+                local tool = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildOfClass("Tool")
                 if tool and tool.Name ~= "Knife" then
                     -- Check if we just killed someone
                     -- This is handled by kill event tracking
@@ -1588,7 +1588,7 @@ task.spawn(function()
         task.wait(0.01)
         if Flags.RapidFire and BS.alive and BS.alive() then
             pcall(function()
-                local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
+                local tool = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildOfClass("Tool")
                 if tool and tool:FindFirstChild("RemoteEvent") then
                     if UIS:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
                         tool.RemoteEvent:FireServer((tool.Handle and tool.Handle.Position or hrp.Position), "Fire")
@@ -1605,7 +1605,7 @@ task.spawn(function()
         task.wait(0.01)
         if Flags.AutoPistol and BS.alive and BS.alive() then
             pcall(function()
-                local tool = lplr.Character and lplr and lplr.Character:FindFirstChildOfClass("Tool")
+                local tool = BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildOfClass("Tool")
                 if tool and tool:FindFirstChild("RemoteEvent") then
                     local rpm = Flags.AutoPistolRPM or 400
                     local interval = 60 / rpm
@@ -1676,9 +1676,9 @@ task.spawn(function()
     while task.wait(0.05) do
         pcall(function()
             if not Flags.Backtrack then return end
-            for _, player in ipairs(Players:GetPlayers()) do
-                if player ~= lplr and player.Character then
-                    local hrp = player and player.Character:FindFirstChild("HumanoidRootPart")
+            for _, player in ipairs(BS.GetPlayers()) do
+                if player ~= lplr and BS.GetCharacter(player) then
+                    local hrp = player and BS.GetCharacter(player):FindFirstChild("HumanoidRootPart")
                     if hrp then
                         Backtrack:Record(player, hrp.Position)
                     end
@@ -1772,7 +1772,7 @@ page:Toggle("Per Weapon Settings", false, function(v) Flags.WeaponConfig = v end
 
 BS.GetWeaponSettings = function()
     if not Flags.WeaponConfig then return nil end
-    local tool = lplr and lplr.Character and lplr and lplr.Character:FindFirstChildWhichIsA("Tool")
+    local tool = lplr and BS.GetCharacter(lplr) and lplr and BS.GetCharacter(lplr):FindFirstChildWhichIsA("Tool")
     if not tool then return nil end
     local name = tool.Name
     return BS.WeaponSettings[name]
